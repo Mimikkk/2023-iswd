@@ -1,1 +1,1 @@
-# Laboratorium ISWD - inteligentne metody wspomagania decyzji
+# Laboratorium ISWD - inteligentne systemy wspomagania decyzji
