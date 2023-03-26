@@ -3,28 +3,45 @@ from pulp import *
 
 if __name__ == '__main__':
   # Opt for:
-  # C3 (Group 1 -- Optimistic does not care as it expects better yields in the future)
-  # C4 (Group 4 -- Pessimistic Risk minimization and current costs)
+  # C3 (Group 1 -- Optimistic  -- Future cost minimization)
+  # C4 (Group 4 -- Pessimistic -- Risk cost minimization and current)
+  # Minimization For:  C3 > C1 >= C2 > C4
   # Index,C1,   C2,   C3,   C4
+
+  # Referencyjne wartości
+
   # Daniel
   # 7,  0.40, 0.90, 0.00, 0.82
   # 21, 0.83, 0.25, 0.80, 0.65
+  # 7  -- Low  C3   | High   C4 --
+  # 21 -- High C4   | Medium C4 -- Preferowane -- 5
 
   # Alex
   # 8,  0.64, 0.44, 0.54, 0.54
   # 6,  0.78, 0.27, 0.71, 0.50
+  # 8  -- Medium C3 | Medium C4 --
+  # 6  -- High   C4 | Medium C4 -- Preferowane -- 3
 
   # Random 1
   # 26, 0.71, 0.25, 0.88, 0.67
   # 9,  0.65, 0.30, 0.71, 0.55
+  # 26 -- High   C3 | Medium C4 --
+  # 9  -- High   C4 | Medium C4 -- Preferowane -- 4
 
   # Random 2
   # 17, 0.68, 0.40, 0.65, 0.60
-  # 6,  0.78, 0.27, 0.71, 0.50
+  # 5 , 0.62, 0.40, 0.56, 0.50
+  # 17 -- High   C3 | Medium C4 --
+  # 5  -- Medium C4 | Medium C4 -- Preferowane -- 2
 
   # Random 3
   # 1,  0.60, 0.93, 0.00, 0.73
   # 12, 0.74, 0.25, 0.80, 0.49
+  # 1   -- Low  C3  | High C4   --
+  # 12  -- High C4  | Medium C4 -- Preferowane -- 1
+
+  # Informacja o informacji preferencyjnej
+  ##
 
   # Scenarios
   # | S | ILW | HLW |
