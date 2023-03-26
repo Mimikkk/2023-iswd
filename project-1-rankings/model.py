@@ -150,7 +150,6 @@ if __name__ == '__main__':
   epsilon = LpVariable(name='epsilon', cat='Continuous')
 
   # variables
-  variables = []
   u1_000 = LpVariable(name='u1_000', cat='Continuous', lowBound=0, upBound=1)
   u2_000 = LpVariable(name='u2_000', cat='Continuous', lowBound=0, upBound=1)
   u3_000 = LpVariable(name='u3_000', cat='Continuous', lowBound=0, upBound=1)
@@ -160,26 +159,22 @@ if __name__ == '__main__':
   u2_100 = LpVariable(name='u2_100', cat='Continuous', lowBound=0, upBound=1)
   u3_100 = LpVariable(name='u3_100', cat='Continuous', lowBound=0, upBound=1)
   u4_100 = LpVariable(name='u4_100', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u1_100, u2_100, u3_100, u4_100]
 
   u1_062 = LpVariable(name='u1_062', cat='Continuous', lowBound=0, upBound=1)
   u1_068 = LpVariable(name='u1_068', cat='Continuous', lowBound=0, upBound=1)
   u1_065 = LpVariable(name='u1_065', cat='Continuous', lowBound=0, upBound=1)
   u1_071 = LpVariable(name='u1_071', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u1_062, u1_068, u1_065, u1_071]
 
   u2_025 = LpVariable(name='u2_025', cat='Continuous', lowBound=0, upBound=1)
   u2_090 = LpVariable(name='u2_090', cat='Continuous', lowBound=0, upBound=1)
   u2_093 = LpVariable(name='u2_093', cat='Continuous', lowBound=0, upBound=1)
   u2_027 = LpVariable(name='u2_027', cat='Continuous', lowBound=0, upBound=1)
   u2_044 = LpVariable(name='u2_044', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u2_025, u2_090, u2_093, u2_027, u2_044]
 
   u3_056 = LpVariable(name='u3_056', cat='Continuous', lowBound=0, upBound=1)
   u3_065 = LpVariable(name='u3_065', cat='Continuous', lowBound=0, upBound=1)
   u3_071 = LpVariable(name='u3_071', cat='Continuous', lowBound=0, upBound=1)
   u3_088 = LpVariable(name='u3_088', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u3_056, u3_065, u3_071, u3_088]
 
   u4_049 = LpVariable(name='u4_049', cat='Continuous', lowBound=0, upBound=1)
   u4_073 = LpVariable(name='u4_073', cat='Continuous', lowBound=0, upBound=1)
@@ -190,48 +185,20 @@ if __name__ == '__main__':
   u4_067 = LpVariable(name='u4_067', cat='Continuous', lowBound=0, upBound=1)
   u4_065 = LpVariable(name='u4_065', cat='Continuous', lowBound=0, upBound=1)
   u4_082 = LpVariable(name='u4_082', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u4_049, u4_073, u4_050, u4_054, u4_060, u4_055, u4_067, u4_065, u4_082]
 
   # referential ranking -- constraints
   u1_083 = LpVariable(name='u1_083', cat='Continuous', lowBound=0, upBound=1)
   u1_040 = LpVariable(name='u1_040', cat='Continuous', lowBound=0, upBound=1)
   u1_078 = LpVariable(name='u1_078', cat='Continuous', lowBound=0, upBound=1)
   u1_064 = LpVariable(name='u1_064', cat='Continuous', lowBound=0, upBound=1)
-  u1_065 = LpVariable(name='u1_065', cat='Continuous', lowBound=0, upBound=1)
-  u1_071 = LpVariable(name='u1_071', cat='Continuous', lowBound=0, upBound=1)
-  u1_062 = LpVariable(name='u1_062', cat='Continuous', lowBound=0, upBound=1)
-  u1_068 = LpVariable(name='u1_068', cat='Continuous', lowBound=0, upBound=1)
   u1_074 = LpVariable(name='u1_074', cat='Continuous', lowBound=0, upBound=1)
   u1_060 = LpVariable(name='u1_030', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u1_083, u1_040, u1_078, u1_064, u1_065, u1_071, u1_062, u1_068, u1_074, u1_060]
 
-  u2_025 = LpVariable(name='u2_025', cat='Continuous', lowBound=0, upBound=1)
-  u2_090 = LpVariable(name='u2_090', cat='Continuous', lowBound=0, upBound=1)
-  u2_027 = LpVariable(name='u2_027', cat='Continuous', lowBound=0, upBound=1)
-  u2_044 = LpVariable(name='u2_044', cat='Continuous', lowBound=0, upBound=1)
   u2_030 = LpVariable(name='u2_030', cat='Continuous', lowBound=0, upBound=1)
   u2_040 = LpVariable(name='u2_040', cat='Continuous', lowBound=0, upBound=1)
-  u2_093 = LpVariable(name='u2_093', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u2_025, u2_090, u2_027, u2_044, u2_030, u2_040, u2_093]
 
   u3_080 = LpVariable(name='u3_080', cat='Continuous', lowBound=0, upBound=1)
-  u3_071 = LpVariable(name='u3_071', cat='Continuous', lowBound=0, upBound=1)
   u3_054 = LpVariable(name='u3_054', cat='Continuous', lowBound=0, upBound=1)
-  u3_088 = LpVariable(name='u3_088', cat='Continuous', lowBound=0, upBound=1)
-  u3_056 = LpVariable(name='u3_056', cat='Continuous', lowBound=0, upBound=1)
-  u3_065 = LpVariable(name='u3_065', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u3_080, u3_071, u3_054, u3_088, u3_056, u3_065]
-
-  u4_065 = LpVariable(name='u4_065', cat='Continuous', lowBound=0, upBound=1)
-  u4_082 = LpVariable(name='u4_082', cat='Continuous', lowBound=0, upBound=1)
-  u4_050 = LpVariable(name='u4_050', cat='Continuous', lowBound=0, upBound=1)
-  u4_054 = LpVariable(name='u4_054', cat='Continuous', lowBound=0, upBound=1)
-  u4_055 = LpVariable(name='u4_055', cat='Continuous', lowBound=0, upBound=1)
-  u4_067 = LpVariable(name='u4_067', cat='Continuous', lowBound=0, upBound=1)
-  u4_049 = LpVariable(name='u4_049', cat='Continuous', lowBound=0, upBound=1)
-  u4_073 = LpVariable(name='u4_073', cat='Continuous', lowBound=0, upBound=1)
-  u4_060 = LpVariable(name='u4_060', cat='Continuous', lowBound=0, upBound=1)
-  variables += [u4_065, u4_082, u4_050, u4_054, u4_055, u4_067, u4_049, u4_073, u4_060]
 
   # constraints
   model += (u1_083 + u2_025 + u3_080 + u4_065 >= u1_040 + u2_090 + u3_000 + u4_082 + epsilon, '#1 constraint')
@@ -305,3 +272,4 @@ if __name__ == '__main__':
 
   print("Objective")
   print(f'epsilon: {epsilon.value()}')
+  print(model.variables())
