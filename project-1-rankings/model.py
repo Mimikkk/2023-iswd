@@ -146,9 +146,10 @@ if __name__ == '__main__':
   # forall u_i >= 0
   model = LpProblem(name='problem', sense=LpMaximize)
 
+  # objective function
   epsilon = LpVariable(name='epsilon', lowBound=0, cat='Continuous')
 
-  # zmienne decyzyjne
+  # variables
   variables = []
   u1_0 = LpVariable(name='u1_0', lowBound=0, cat='Continuous')
   u2_0 = LpVariable(name='u2_0', lowBound=0, cat='Continuous')
@@ -201,7 +202,8 @@ if __name__ == '__main__':
   u1_62 = LpVariable(name='u1_62', lowBound=0, cat='Continuous')
   u1_68 = LpVariable(name='u1_68', lowBound=0, cat='Continuous')
   u1_74 = LpVariable(name='u1_74', lowBound=0, cat='Continuous')
-  variables += [u1_83, u1_40, u1_78, u1_64, u1_65, u1_71, u1_62, u1_68, u1_74]
+  u1_60 = LpVariable(name='u1_30', lowBound=0, cat='Continuous')
+  variables += [u1_83, u1_40, u1_78, u1_64, u1_65, u1_71, u1_62, u1_68, u1_74, u1_60]
 
   u2_25 = LpVariable(name='u2_25', lowBound=0, cat='Continuous')
   u2_90 = LpVariable(name='u2_90', lowBound=0, cat='Continuous')
@@ -231,9 +233,23 @@ if __name__ == '__main__':
   u4_60 = LpVariable(name='u4_60', lowBound=0, cat='Continuous')
   variables += [u4_65, u4_82, u4_50, u4_54, u4_55, u4_67, u4_49, u4_73, u4_60]
 
+  # constraints
+  model += (u1_83 + u2_25 + u3_80 + u4_65 >= u1_40 + u2_90 + u3_0 + u4_82 + epsilon, '#1 constraint')
+  model += (u1_78 + u2_27 + u3_71 + u4_50 >= u1_64 + u2_44 + u3_54 + u4_54 + epsilon, '#2 constraint')
+  model += (u1_65 + u2_30 + u3_71 + u4_55 >= u1_71 + u2_25 + u3_88 + u4_67 + epsilon, '#3 constraint')
+  model += (u1_62 + u2_40 + u3_56 + 74_50 == u1_68 + u2_40 + u3_65 + u4_60, '#4 constraint')
+  model += (u1_74 + u2_25 + u3_80 + u4_49 >= u1_60 + u2_93 + u3_0 + u4_73 + epsilon, '#5 constraint')
+
+  # Ograniczenia problemu
+  # model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
+  # model += (u1_9 + u2_62 + u3_88 >= u1_25 + u2_30 + u3_12 + epsilon, '#2 constraint')
+  # model += (u1_25 + u2_30 + u3_12 >= u1_7 + u2_55 + u3_12 + epsilon, '#3 constraint')
+
+
   # normalization
   for u in [u1_0, u2_0, u3_0, u4_0]:
     model += u == 0
+
   # normalization
   for u in [u1_100, u2_100, u3_100, u4_100]:
     model += u == 1
@@ -255,13 +271,10 @@ if __name__ == '__main__':
   # Non-negativity
   for u in variables: model += u >= 0
 
-  # Ograniczenia problemu
-  # model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
-  # model += (u1_9 + u2_62 + u3_88 >= u1_25 + u2_30 + u3_12 + epsilon, '#2 constraint')
-  # model += (u1_25 + u2_30 + u3_12 >= u1_7 + u2_55 + u3_12 + epsilon, '#3 constraint')
-
   # Objective function
   model += epsilon
+
+  # Solve
   status = model.solve()
 
   # Wypisanie statusu
