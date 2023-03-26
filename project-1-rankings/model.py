@@ -65,14 +65,23 @@ if __name__ == '__main__':
   # o4: 0.68 + 0.40 + 0.65 + 0.60 = 0.62 + 0.40 + 0.56 + 0.50
   # o5: e + 0.60 + 0.93 + 0.00 + 0.73 <= 0.74 + 0.25 + 0.80 + 0.49
 
-  # o6: 0.4 + 0.9 + 0.0 + 0.82 = 1
-
   # normalization
   # sum of u_i = 1
   # forall u_i(0) = 0
 
+  # monotonicity
+  #
+
+  # non-negativity
+  # forall u_i >= 0
+
   # Informacja o informacji preferencyjnej
-  ##
+  # C3 (Group 1 -- Optimistic  -- Future cost minimization)
+  # C4 (Group 4 -- Pessimistic -- Risk cost minimization and current)
+  # Preferencja została określona jako konieczna minimalizacja kosztu ryzyka (C4),
+  # oraz ignorowanie wobec kosztów teraźniejszych (C2)  wobec pozostałych kryteriów, co ustawia
+  # nasz ranking kryteriów jako C3 >= C1 ~ C2 >= C4
+  # Co oznacza, że C4 ma być jak najmniejsze, a C3 od C1 i C2 może być mniejsze bądź równe.
 
   # Scenarios
   # | S | ILW | HLW |
