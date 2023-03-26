@@ -10,6 +10,38 @@ if __name__ == '__main__':
   # 6, 0.78, 0.27, 0.71, 0.50
   # 8, 0.64, 0.44, 0.54, 0.54
 
+  # Random 1
+  # 9, 0.65, 0.30, 0.71, 0.55
+  # 26, 0.71, 0.25, 0.88, 0.67
+
+  # Random 2
+  # 6, 0.78, 0.27, 0.71, 0.50
+  # 17, 0.68, 0.40, 0.65, 0.60
+
+  # Random 3
+  # 1, 0.60, 0.93, 0.00, 0.73
+  # 12, 0.74, 0.25, 0.80, 0.49
+
+  # Scenarios
+  # | S | ILW | HLW |
+  # | --- | --- | --- |
+  # | S1 | 10 | 30 |
+  # | S2 | 30 | 30 |
+  # | S3 | 50 | 50 |
+  # S -- Scenario
+  # ILW -- Intermediate Level Waste
+  # HLW -- High Level Waste
+  # S1 -- Scenario 1
+  # S2 -- Scenario 2
+  # S3 -- Scenario 3
+  # S1: 10 ILW + 30 HLW
+  # S2: 30 ILW + 30 HLW
+  # S3: 50 ILW + 50 HLW
+  # C1 -- COST -- Total financial cost
+  # C2 -- COST -- Cost incurred by the present consumers
+  # C3 -- COST -- Cost to be supported by the future consumers
+  # C4 -- COST -- Risk due to overcosts
+
   model = LpProblem(name='problem', sense=LpMaximize)
   u1_35 = LpVariable(name='u1_35', lowBound=0, cat='Continuous')
   u3_25 = LpVariable(name='u3_25', lowBound=0, cat='Continuous')
