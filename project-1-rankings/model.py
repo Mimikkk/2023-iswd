@@ -209,31 +209,9 @@ if __name__ == '__main__':
     model += u >= 0
 
   # Ograniczenia problemu
-  model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
-  model += (u1_9 + u2_62 + u3_88 >= u1_25 + u2_30 + u3_12 + epsilon, '#2 constraint')
-  model += (u1_25 + u2_30 + u3_12 >= u1_7 + u2_55 + u3_12 + epsilon, '#3 constraint')
-
-  model += u1_62 + u2_62 + u3_100 == 1
-  model += u1_0 == 0
-  model += u2_2 == 0
-  model += u3_0 == 0
-
-  model += u1_31 >= u1_0
-  model += u1_62 >= u1_31
-  model += u2_32 >= u2_2
-  model += u2_62 >= u2_32
-  model += u3_100 >= u3_50
-  model += u3_50 >= u3_0
-
-  model += u1_0 >= 0
-  model += u1_31 >= 0
-  model += u1_62 >= 0
-  model += u2_2 >= 0
-  model += u2_32 >= 0
-  model += u2_62 >= 0
-  model += u3_0 >= 0
-  model += u3_50 >= 0
-  model += u3_100 >= 0
+  # model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
+  # model += (u1_9 + u2_62 + u3_88 >= u1_25 + u2_30 + u3_12 + epsilon, '#2 constraint')
+  # model += (u1_25 + u2_30 + u3_12 >= u1_7 + u2_55 + u3_12 + epsilon, '#3 constraint')
 
   # Objective function
   model += epsilon
@@ -248,14 +226,14 @@ if __name__ == '__main__':
   # WYNIK: objective : 12.000000199999999
 
   # Wypisanie wartosci zmiennych decyzyjnych
-  u1, u2, u3 = u1_35.value(), u2_62.value(), u3_25.value()
-  print(f'Dubov {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-
-  u1, u2, u3 = u1_7.value(), u2_55.value(), u3_12.value()
-  print(f'Elmendi {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-
-  u1, u2, u3 = u1_25.value(), u2_30.value(), u3_12.value()
-  print(f'Ferrert {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-
-  u1, u2, u3 = u1_9.value(), u2_62.value(), u3_88.value()
-  print(f'Grishuk {u1} + {u2} + {u3} = {u1 + u2 + u3}')
+  # u1, u2, u3 = u1_35.value(), u2_62.value(), u3_25.value()
+  # print(f'Dubov {u1} + {u2} + {u3} = {u1 + u2 + u3}')
+  #
+  # u1, u2, u3 = u1_7.value(), u2_55.value(), u3_12.value()
+  # print(f'Elmendi {u1} + {u2} + {u3} = {u1 + u2 + u3}')
+  #
+  # u1, u2, u3 = u1_25.value(), u2_30.value(), u3_12.value()
+  # print(f'Ferrert {u1} + {u2} + {u3} = {u1 + u2 + u3}')
+  #
+  # u1, u2, u3 = u1_9.value(), u2_62.value(), u3_88.value()
+  # print(f'Grishuk {u1} + {u2} + {u3} = {u1 + u2 + u3}')
