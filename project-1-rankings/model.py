@@ -186,6 +186,11 @@ if __name__ == '__main__':
   u4_82 = LpVariable(name='u1_82', lowBound=0, cat='Continuous')
   variables += [u4_49, u4_73, u4_50, u4_54, u4_60, u4_55, u4_67, u4_65, u4_82]
 
+  # normalization
+  for u in [u1_0, u2_0, u3_0, u4_0]:
+    model += u == 0
+
+  # Non-negativity
   for u in variables:
     model += u >= 0
 
