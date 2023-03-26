@@ -11,27 +11,27 @@ if __name__ == '__main__':
   # Referencyjne wartości
 
   # Daniel
-  # 7,  0.40, 0.90, 0.00, 0.82
+  # 7,  0.40, 0.90, 0.00, 0.82 -- 80% / 34%
   # 21, 0.83, 0.25, 0.80, 0.65
   # 7  -- Low  C3   | High   C4 --
   # 21 -- High C4   | Medium C4 -- Preferowane      -- 5
   # Alex
-  # 8,  0.64, 0.44, 0.54, 0.54
+  # 8,  0.64, 0.44, 0.54, 0.54 -- 17% /  8%
   # 6,  0.78, 0.27, 0.71, 0.50
   # 8  -- Medium C3 | Medium C4 --
   # 6  -- High   C4 | Medium C4 -- Preferowane      -- 3
-  # Random 1
-  # 26, 0.71, 0.25, 0.88, 0.67
+  # Random 1 0.5 - 1.0
+  # 26, 0.71, 0.25, 0.88, 0.67 -- 17% / 24%
   # 9,  0.65, 0.30, 0.71, 0.55
   # 26 -- High   C3 | Medium C4 --
   # 9  -- High   C4 | Medium C4 -- Preferowane      -- 4
   # Random 2
-  # 17, 0.68, 0.40, 0.65, 0.60
+  # 17, 0.68, 0.40, 0.65, 0.60 --  9% / 20%
   # 5 , 0.62, 0.40, 0.56, 0.50
   # 17 -- High   C3 | Medium C4 --
   # 5  -- Medium C4 | Medium C4 -- Nierozróżnialny  -- 2
   # Random 3
-  # 1,  0.60, 0.93, 0.00, 0.73
+  # 1,  0.60, 0.93, 0.00, 0.73 -- 80% / 48%
   # 12, 0.74, 0.25, 0.80, 0.49
   # 1   -- Low  C3  | High C4   --
   # 12  -- High C4  | Medium C4 -- Preferowane      -- 1
