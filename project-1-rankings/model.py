@@ -2,21 +2,25 @@ import numpy as np
 from pulp import *
 
 if __name__ == '__main__':
+  # Opt for:
+  # C3 (Group 1 -- Optimistic does not care as it expects better yields in the future)
+  # C4 (Group 4 -- Pessimistic Risk minimization and current costs)
+  # Index,C1,   C2,   C3,   C4
   # Daniel
   # 7,  0.40, 0.90, 0.00, 0.82
   # 21, 0.83, 0.25, 0.80, 0.65
 
   # Alex
-  # 6,  0.78, 0.27, 0.71, 0.50
   # 8,  0.64, 0.44, 0.54, 0.54
+  # 6,  0.78, 0.27, 0.71, 0.50
 
   # Random 1
-  # 9,  0.65, 0.30, 0.71, 0.55
   # 26, 0.71, 0.25, 0.88, 0.67
+  # 9,  0.65, 0.30, 0.71, 0.55
 
   # Random 2
-  # 6,  0.78, 0.27, 0.71, 0.50
   # 17, 0.68, 0.40, 0.65, 0.60
+  # 6,  0.78, 0.27, 0.71, 0.50
 
   # Random 3
   # 1,  0.60, 0.93, 0.00, 0.73
