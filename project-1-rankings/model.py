@@ -40,6 +40,21 @@ if __name__ == '__main__':
   # 1   -- Low  C3  | High C4   --
   # 12  -- High C4  | Medium C4 -- Preferowane -- 1
 
+  # Daniel
+  # I     C1,   C2,   C3,   C4 |  | Rank
+  # 7,  0.40, 0.90, 0.00, 0.82 |  |
+  # 21, 0.83, 0.25, 0.80, 0.65 |  |
+  # 8,  0.64, 0.44, 0.54, 0.54 |  |
+  # 6,  0.78, 0.27, 0.71, 0.50 |  |
+  # 26, 0.71, 0.25, 0.88, 0.67 |  |
+  # 9,  0.65, 0.30, 0.71, 0.55 |  |
+  # 17, 0.68, 0.40, 0.65, 0.60 |  |
+  # 5 , 0.62, 0.40, 0.56, 0.50 |  |
+  # 1,  0.60, 0.93, 0.00, 0.73 |  |
+  # 12, 0.74, 0.25, 0.80, 0.49 |  |
+
+  # 0.4 + 0.9 + 0.0 + 0.82 <=
+
   # Informacja o informacji preferencyjnej
   ##
 
@@ -89,7 +104,6 @@ if __name__ == '__main__':
   u2_32 = LpVariable(name='u2_32', lowBound=0, cat='Continuous')
   u3_50 = LpVariable(name='u3_50', lowBound=0, cat='Continuous')
 
-  # Utworzenie dwoch zmiennych decyzyjnych
   epsilon = LpVariable(name='epsilon', lowBound=0, cat='Continuous')
 
   # Ograniczenia problemu
