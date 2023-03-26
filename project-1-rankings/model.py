@@ -190,6 +190,20 @@ if __name__ == '__main__':
   for u in [u1_0, u2_0, u3_0, u4_0]:
     model += u == 0
 
+  # monotonicity
+  model += u1_62 >= u1_68
+  model += u1_65 >= u1_71
+  model += u2_25 >= u2_90
+  model += u2_25 >= u2_93
+  model += u2_27 >= u2_44
+  model += u3_56 >= u3_65
+  model += u3_71 >= u3_88
+  model += u4_49 >= u4_73
+  model += u4_50 >= u4_54
+  model += u4_50 >= u4_60
+  model += u4_55 >= u4_67
+  model += u4_65 >= u4_82
+
   # Non-negativity
   for u in variables:
     model += u >= 0
