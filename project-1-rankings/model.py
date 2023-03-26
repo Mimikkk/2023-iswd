@@ -155,6 +155,11 @@ if __name__ == '__main__':
   u3_0 = LpVariable(name='u3_0', lowBound=0, cat='Continuous')
   u4_0 = LpVariable(name='u4_0', lowBound=0, cat='Continuous')
   variables += [u1_0, u2_0, u3_0, u4_0]
+  u1_100 = LpVariable(name='u_100', lowBound=0, cat='Continuous')
+  u2_100 = LpVariable(name='u_100', lowBound=0, cat='Continuous')
+  u3_100 = LpVariable(name='u_100', lowBound=0, cat='Continuous')
+  u4_100 = LpVariable(name='u_100', lowBound=0, cat='Continuous')
+  variables += [u1_100, u2_100, u3_100, u4_100]
 
   u1_62 = LpVariable(name='u1_62', lowBound=0, cat='Continuous')
   u1_68 = LpVariable(name='u1_68', lowBound=0, cat='Continuous')
@@ -186,9 +191,52 @@ if __name__ == '__main__':
   u4_82 = LpVariable(name='u1_82', lowBound=0, cat='Continuous')
   variables += [u4_49, u4_73, u4_50, u4_54, u4_60, u4_55, u4_67, u4_65, u4_82]
 
+  # referential ranking -- constraints
+  u1_83 = LpVariable(name='u1_83', lowBound=0, cat='Continuous')
+  u1_40 = LpVariable(name='u1_40', lowBound=0, cat='Continuous')
+  u1_78 = LpVariable(name='u1_78', lowBound=0, cat='Continuous')
+  u1_64 = LpVariable(name='u1_64', lowBound=0, cat='Continuous')
+  u1_65 = LpVariable(name='u1_65', lowBound=0, cat='Continuous')
+  u1_71 = LpVariable(name='u1_71', lowBound=0, cat='Continuous')
+  u1_62 = LpVariable(name='u1_62', lowBound=0, cat='Continuous')
+  u1_68 = LpVariable(name='u1_68', lowBound=0, cat='Continuous')
+  u1_74 = LpVariable(name='u1_74', lowBound=0, cat='Continuous')
+  variables += [u1_83, u1_40, u1_78, u1_64, u1_65, u1_71, u1_62, u1_68, u1_74]
+
+  u2_25 = LpVariable(name='u2_25', lowBound=0, cat='Continuous')
+  u2_90 = LpVariable(name='u2_90', lowBound=0, cat='Continuous')
+  u2_27 = LpVariable(name='u2_27', lowBound=0, cat='Continuous')
+  u2_44 = LpVariable(name='u2_44', lowBound=0, cat='Continuous')
+  u2_30 = LpVariable(name='u2_30', lowBound=0, cat='Continuous')
+  u2_40 = LpVariable(name='u2_40', lowBound=0, cat='Continuous')
+  u2_93 = LpVariable(name='u2_93', lowBound=0, cat='Continuous')
+  variables += [u2_25, u2_90, u2_27, u2_44, u2_30, u2_40, u2_93]
+
+  u3_80 = LpVariable(name='u3_80', lowBound=0, cat='Continuous')
+  u3_71 = LpVariable(name='u3_71', lowBound=0, cat='Continuous')
+  u3_54 = LpVariable(name='u3_54', lowBound=0, cat='Continuous')
+  u3_88 = LpVariable(name='u3_88', lowBound=0, cat='Continuous')
+  u3_56 = LpVariable(name='u3_56', lowBound=0, cat='Continuous')
+  u3_65 = LpVariable(name='u3_65', lowBound=0, cat='Continuous')
+  variables += [u3_80, u3_71, u3_54, u3_88, u3_56, u3_65]
+
+  u4_65 = LpVariable(name='u4_65', lowBound=0, cat='Continuous')
+  u4_82 = LpVariable(name='u4_82', lowBound=0, cat='Continuous')
+  u4_50 = LpVariable(name='u4_50', lowBound=0, cat='Continuous')
+  u4_54 = LpVariable(name='u4_54', lowBound=0, cat='Continuous')
+  u4_55 = LpVariable(name='u4_55', lowBound=0, cat='Continuous')
+  u4_67 = LpVariable(name='u4_67', lowBound=0, cat='Continuous')
+  u4_49 = LpVariable(name='u4_49', lowBound=0, cat='Continuous')
+  u4_73 = LpVariable(name='u4_73', lowBound=0, cat='Continuous')
+  u4_60 = LpVariable(name='u4_60', lowBound=0, cat='Continuous')
+  variables += [u4_65, u4_82, u4_50, u4_54, u4_55, u4_67, u4_49, u4_73, u4_60]
+
   # normalization
   for u in [u1_0, u2_0, u3_0, u4_0]:
     model += u == 0
+  # normalization
+  for u in [u1_100, u2_100, u3_100, u4_100]:
+    model += u == 1
 
   # monotonicity
   model += u1_62 >= u1_68
@@ -205,8 +253,7 @@ if __name__ == '__main__':
   model += u4_65 >= u4_82
 
   # Non-negativity
-  for u in variables:
-    model += u >= 0
+  for u in variables: model += u >= 0
 
   # Ograniczenia problemu
   # model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
