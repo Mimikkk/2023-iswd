@@ -3,23 +3,23 @@ from pulp import *
 
 if __name__ == '__main__':
   # Daniel
-  # 7,0.40,0.90,0.00,0.82
+  # 7,  0.40, 0.90, 0.00, 0.82
   # 21, 0.83, 0.25, 0.80, 0.65
 
   # Alex
-  # 6, 0.78, 0.27, 0.71, 0.50
-  # 8, 0.64, 0.44, 0.54, 0.54
+  # 6,  0.78, 0.27, 0.71, 0.50
+  # 8,  0.64, 0.44, 0.54, 0.54
 
   # Random 1
-  # 9, 0.65, 0.30, 0.71, 0.55
+  # 9,  0.65, 0.30, 0.71, 0.55
   # 26, 0.71, 0.25, 0.88, 0.67
 
   # Random 2
-  # 6, 0.78, 0.27, 0.71, 0.50
+  # 6,  0.78, 0.27, 0.71, 0.50
   # 17, 0.68, 0.40, 0.65, 0.60
 
   # Random 3
-  # 1, 0.60, 0.93, 0.00, 0.73
+  # 1,  0.60, 0.93, 0.00, 0.73
   # 12, 0.74, 0.25, 0.80, 0.49
 
   # Scenarios
@@ -37,10 +37,10 @@ if __name__ == '__main__':
   # S1: 10 ILW + 30 HLW
   # S2: 30 ILW + 30 HLW
   # S3: 50 ILW + 50 HLW
-  # C1 -- COST -- Total financial cost
-  # C2 -- COST -- Cost incurred by the present consumers
-  # C3 -- COST -- Cost to be supported by the future consumers
-  # C4 -- COST -- Risk due to overcosts
+  # C1 -- COST -- Group 3 Pessimistic -- Total financial cost
+  # C2 -- COST -- Group 2 Pessimistic -- Cost incurred by the present consumers
+  # C3 -- COST -- Group 1 Optimistic  -- Cost to be supported by the future consumers
+  # C4 -- COST -- Group 4 Pessimistic -- Risk due to overcosts
 
   model = LpProblem(name='problem', sense=LpMaximize)
   u1_35 = LpVariable(name='u1_35', lowBound=0, cat='Continuous')
