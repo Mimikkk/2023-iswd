@@ -272,15 +272,36 @@ if __name__ == '__main__':
   print(f'objective: {model.objective.value()}')
   # WYNIK: objective : 12.000000199999999
 
-  # Wypisanie wartosci zmiennych decyzyjnych
-  # u1, u2, u3 = u1_35.value(), u2_62.value(), u3_25.value()
-  # print(f'Dubov {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-  #
-  # u1, u2, u3 = u1_7.value(), u2_55.value(), u3_12.value()
-  # print(f'Elmendi {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-  #
-  # u1, u2, u3 = u1_25.value(), u2_30.value(), u3_12.value()
-  # print(f'Ferrert {u1} + {u2} + {u3} = {u1 + u2 + u3}')
-  #
-  # u1, u2, u3 = u1_9.value(), u2_62.value(), u3_88.value()
-  # print(f'Grishuk {u1} + {u2} + {u3} = {u1 + u2 + u3}')
+  # Wypisanie wartości zmiennych decyzyjnych
+  print(f'Daniel')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_040, u2_090, u3_000, u4_082])
+  print(f'0  7: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_083, u2_025, u3_080, u4_065])
+  print(f'1 21: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+
+  print(f'Alex')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_064, u2_044, u3_054, u4_054])
+  print(f'0  8: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_078, u2_027, u3_071, u4_050])
+  print(f'1  6: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+
+  print(f'Random 1')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_071, u2_025, u3_088, u4_067])
+  print(f'0 26: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_065, u2_030, u3_071, u4_055])
+  print(f'1  9: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+
+  print(f'Random 2')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_068, u2_040, u3_065, u4_060])
+  print(f'~ 17: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_062, u2_040, u3_056, u4_050])
+  print(f'~  5: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+
+  print(f'Random 3')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_060, u2_093, u3_000, u4_073])
+  print(f'0  1: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_074, u2_025, u3_080, u4_049])
+  print(f'1 12: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
+
+  print("Objective")
+  print(f'epsilon: {epsilon.value()}')
