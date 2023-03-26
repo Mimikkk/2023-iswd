@@ -150,84 +150,56 @@ if __name__ == '__main__':
   epsilon = LpVariable(name='epsilon', cat='Continuous')
 
   # variables
-  u1_000 = LpVariable(name='u1_000', cat='Continuous', lowBound=0, upBound=1)
-  u2_000 = LpVariable(name='u2_000', cat='Continuous', lowBound=0, upBound=1)
-  u3_000 = LpVariable(name='u3_000', cat='Continuous', lowBound=0, upBound=1)
-  u4_000 = LpVariable(name='u4_000', cat='Continuous', lowBound=0, upBound=1)
+  vars = {}
+  for i in range(0, 100 + 1):
+    for u in range(1, 4 + 1):
+      vars[f'u{u}_{i:03d}'] = LpVariable(name=f'u{u}_{i:03d}', cat='Continuous', lowBound=0, upBound=1)
+  vars['epsilon'] = epsilon
 
-  u1_100 = LpVariable(name='u1_100', cat='Continuous', lowBound=0, upBound=1)
-  u2_100 = LpVariable(name='u2_100', cat='Continuous', lowBound=0, upBound=1)
-  u3_100 = LpVariable(name='u3_100', cat='Continuous', lowBound=0, upBound=1)
-  u4_100 = LpVariable(name='u4_100', cat='Continuous', lowBound=0, upBound=1)
-
-  u1_062 = LpVariable(name='u1_062', cat='Continuous', lowBound=0, upBound=1)
-  u1_068 = LpVariable(name='u1_068', cat='Continuous', lowBound=0, upBound=1)
-  u1_065 = LpVariable(name='u1_065', cat='Continuous', lowBound=0, upBound=1)
-  u1_071 = LpVariable(name='u1_071', cat='Continuous', lowBound=0, upBound=1)
-
-  u2_025 = LpVariable(name='u2_025', cat='Continuous', lowBound=0, upBound=1)
-  u2_090 = LpVariable(name='u2_090', cat='Continuous', lowBound=0, upBound=1)
-  u2_093 = LpVariable(name='u2_093', cat='Continuous', lowBound=0, upBound=1)
-  u2_027 = LpVariable(name='u2_027', cat='Continuous', lowBound=0, upBound=1)
-  u2_044 = LpVariable(name='u2_044', cat='Continuous', lowBound=0, upBound=1)
-
-  u3_056 = LpVariable(name='u3_056', cat='Continuous', lowBound=0, upBound=1)
-  u3_065 = LpVariable(name='u3_065', cat='Continuous', lowBound=0, upBound=1)
-  u3_071 = LpVariable(name='u3_071', cat='Continuous', lowBound=0, upBound=1)
-  u3_088 = LpVariable(name='u3_088', cat='Continuous', lowBound=0, upBound=1)
-
-  u4_049 = LpVariable(name='u4_049', cat='Continuous', lowBound=0, upBound=1)
-  u4_073 = LpVariable(name='u4_073', cat='Continuous', lowBound=0, upBound=1)
-  u4_050 = LpVariable(name='u4_050', cat='Continuous', lowBound=0, upBound=1)
-  u4_054 = LpVariable(name='u4_054', cat='Continuous', lowBound=0, upBound=1)
-  u4_060 = LpVariable(name='u4_060', cat='Continuous', lowBound=0, upBound=1)
-  u4_055 = LpVariable(name='u4_055', cat='Continuous', lowBound=0, upBound=1)
-  u4_067 = LpVariable(name='u4_067', cat='Continuous', lowBound=0, upBound=1)
-  u4_065 = LpVariable(name='u4_065', cat='Continuous', lowBound=0, upBound=1)
-  u4_082 = LpVariable(name='u4_082', cat='Continuous', lowBound=0, upBound=1)
-
-  # referential ranking -- constraints
-  u1_083 = LpVariable(name='u1_083', cat='Continuous', lowBound=0, upBound=1)
-  u1_040 = LpVariable(name='u1_040', cat='Continuous', lowBound=0, upBound=1)
-  u1_078 = LpVariable(name='u1_078', cat='Continuous', lowBound=0, upBound=1)
-  u1_064 = LpVariable(name='u1_064', cat='Continuous', lowBound=0, upBound=1)
-  u1_074 = LpVariable(name='u1_074', cat='Continuous', lowBound=0, upBound=1)
-  u1_060 = LpVariable(name='u1_030', cat='Continuous', lowBound=0, upBound=1)
-
-  u2_030 = LpVariable(name='u2_030', cat='Continuous', lowBound=0, upBound=1)
-  u2_040 = LpVariable(name='u2_040', cat='Continuous', lowBound=0, upBound=1)
-
-  u3_080 = LpVariable(name='u3_080', cat='Continuous', lowBound=0, upBound=1)
-  u3_054 = LpVariable(name='u3_054', cat='Continuous', lowBound=0, upBound=1)
-
-  # constraints
-  model += (u1_083 + u2_025 + u3_080 + u4_065 >= u1_040 + u2_090 + u3_000 + u4_082 + epsilon, '#1 constraint')
-  model += (u1_078 + u2_027 + u3_071 + u4_050 >= u1_064 + u2_044 + u3_054 + u4_054 + epsilon, '#2 constraint')
-  model += (u1_065 + u2_030 + u3_071 + u4_055 >= u1_071 + u2_025 + u3_088 + u4_067 + epsilon, '#3 constraint')
-  model += (u1_062 + u2_040 + u3_056 + u4_050 == u1_068 + u2_040 + u3_065 + u4_060, '#4 constraint')
-  model += (u1_074 + u2_025 + u3_080 + u4_049 >= u1_060 + u2_093 + u3_000 + u4_073 + epsilon, '#5 constraint')
-
+  model.addConstraint(
+    (vars['u1_083'] + vars['u2_025'] + vars['u3_080'] + vars['u4_065']
+     >= vars['u1_040'] + vars['u2_090'] + vars['u3_000'] + vars['u4_082'] + vars['epsilon']),
+    '#1 constraint'
+  )
+  model.addConstraint(
+    (vars['u1_078'] + vars['u2_027'] + vars['u3_071'] + vars['u4_050']
+     >= vars['u1_064'] + vars['u2_044'] + vars['u3_054'] + vars['u4_054'] + vars['epsilon']),
+    '#2 constraint'
+  )
+  model.addConstraint(
+    (vars['u1_065'] + vars['u2_030'] + vars['u3_071'] + vars['u4_055']
+     >= vars['u1_071'] + vars['u2_025'] + vars['u3_088'] + vars['u4_067'] + vars['epsilon']),
+    '#3 constraint'
+  )
+  model.addConstraint(
+    (vars['u1_062'] + vars['u2_040'] + vars['u3_056'] + vars['u4_050']
+     == vars['u1_068'] + vars['u2_040'] + vars['u3_065'] + vars['u4_060']),
+    '#4 constraint'
+  )
+  model.addConstraint(
+    (vars['u1_074'] + vars['u2_025'] + vars['u3_080'] + vars['u4_049']
+     >= vars['u1_060'] + vars['u2_093'] + vars['u3_000'] + vars['u4_073'] + vars['epsilon']),
+    '#5 constraint'
+  )
   # monotonicity
-  model += u1_062 >= u1_068
-  model += u1_065 >= u1_071
-  model += u2_025 >= u2_090
-  model += u2_025 >= u2_093
-  model += u2_027 >= u2_044
-  model += u3_056 >= u3_065
-  model += u3_071 >= u3_088
-  model += u4_049 >= u4_073
-  model += u4_050 >= u4_054
-  model += u4_050 >= u4_060
-  model += u4_055 >= u4_067
-  model += u4_065 >= u4_082
+  model.addConstraint(vars['u1_000'] <= vars['u1_100'])
+  model.addConstraint(vars['u2_000'] <= vars['u2_100'])
+  model.addConstraint(vars['u3_000'] <= vars['u3_100'])
+  model.addConstraint(vars['u4_000'] <= vars['u4_100'])
+  model.addConstraint(vars['u1_062'] >= vars['u1_068'])
+  model.addConstraint(vars['u1_065'] >= vars['u1_071'])
+  model.addConstraint(vars['u2_025'] >= vars['u2_090'])
+  model.addConstraint(vars['u2_025'] >= vars['u2_093'])
+  model.addConstraint(vars['u2_027'] >= vars['u2_044'])
+  model.addConstraint(vars['u3_056'] >= vars['u3_065'])
+  model.addConstraint(vars['u3_071'] >= vars['u3_088'])
+  model.addConstraint(vars['u4_049'] >= vars['u4_073'])
+  model.addConstraint(vars['u4_050'] >= vars['u4_054'])
+  model.addConstraint(vars['u4_050'] >= vars['u4_060'])
+  model.addConstraint(vars['u4_055'] >= vars['u4_067'])
+  model.addConstraint(vars['u4_065'] >= vars['u4_082'])
 
-  # Non-negativity
-  # for u in variables:
-  #   model += u <= 0
-
-  # Objective function
-  model += epsilon
-
+  model.setObjective(epsilon)
   # Solve
   status = model.solve()
 
@@ -240,37 +212,6 @@ if __name__ == '__main__':
   # WYNIK: objective : 12.000000199999999
 
   # Wypisanie wartości zmiennych decyzyjnych
-  print(f'Daniel')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_040, u2_090, u3_000, u4_082])
-  print(f'0  7: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_083, u2_025, u3_080, u4_065])
-  print(f'1 21: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-
-  print(f'Alex')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_064, u2_044, u3_054, u4_054])
-  print(f'0  8: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_078, u2_027, u3_071, u4_050])
-  print(f'1  6: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-
-  print(f'Random 1')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_071, u2_025, u3_088, u4_067])
-  print(f'0 26: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_065, u2_030, u3_071, u4_055])
-  print(f'1  9: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-
-  print(f'Random 2')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_068, u2_040, u3_065, u4_060])
-  print(f'~ 17: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_062, u2_040, u3_056, u4_050])
-  print(f'~  5: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-
-  print(f'Random 3')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_060, u2_093, u3_000, u4_073])
-  print(f'0  1: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-  u1, u2, u3, u4 = map(lambda x: x.value(), [u1_074, u2_025, u3_080, u4_049])
-  print(f'1 12: {u1} + {u2} + {u3} + {u4} = {u1 + u2 + u3 + u4}')
-
-  print("Objective")
   print(f'epsilon: {epsilon.value()}')
 
   # zaladowanie wszystkich wariantow
@@ -303,4 +244,11 @@ if __name__ == '__main__':
     "26": (0.71, 0.25, 0.88, 0.67),
     "27": (0.80, 0.06, 1.00, 0.67)
   }
-  print(model.variables())
+
+  # wypisanie wartosci zmiennych
+  for g1, g2, g3, g4 in variants.values():
+    g1, g2, g3, g4 = map(lambda x: int(x * 100), [g1, g2, g3, g4])
+    u1, u2, u3, u4 = [vars[f"u1_{g1:03d}"], vars[f"u2_{g2:03d}"], vars[f"u3_{g3:03d}"], vars[f"u4_{g4:03d}"]]
+    v1, v2, v3, v4 = map(lambda x: x.value(), [u1, u2, u3, u4])
+    print(f'u1_{g1:03d} = {v1}, u2_{g2:03d} = {v2}, u3_{g3:03d} = {v3}, u4_{g4:03d} = {v4}')
+
