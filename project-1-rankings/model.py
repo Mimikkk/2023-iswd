@@ -117,33 +117,77 @@ if __name__ == '__main__':
   # C3 -- COST -- Group 1 Optimistic  -- Cost to be supported by the future consumers
   # C4 -- COST -- Group 4 Pessimistic -- Risk due to overcosts
 
+  # max: e
+  # o1: u1(0.83) + u2(0.25) + u3(0.80) + u4(0.65) >= u1(0.40) + u2(0.90) + u3(0.00) + u4(0.82) + e
+  # o2: u1(0.78) + u2(0.27) + u3(0.71) + u4(0.50) >= u1(0.64) + u2(0.44) + u3(0.54) + u4(0.54) + e
+  # o3: u1(0.65) + u2(0.30) + u3(0.71) + u4(0.55) >= u1(0.71) + u2(0.25) + u3(0.88) + u4(0.67) + e
+  # o4: u1(0.62) + u2(0.40) + u3(0.56) + u4(0.50) == u1(0.68) + u2(0.40) + u3(0.65) + u4(0.60)
+  # o5: u1(0.74) + u2(0.25) + u3(0.80) + u4(0.49) >= u1(0.60) + u1(0.93) + u3(0.00) + u4(0.73) + e
+
+  # normalization
+  # sum of u_i = 1
+  # forall u_i(0) = 0
+
+  # monotonicity
+  # u1(0.62) >= u1(0.68)
+  # u1(0.65) >= u1(0.71)
+  # u2(0.25) >= u2(0.90)
+  # u2(0.25) >= u2(0.93)
+  # u2(0.27) >= u2(0.44)
+  # u3(0.56) >= u3(0.65)
+  # u3(0.71) >= u3(0.88)
+  # u4(0.49) >= u4(0.73)
+  # u4(0.50) >= u4(0.54)
+  # u4(0.50) >= u4(0.60)
+  # u4(0.55) >= u4(0.67)
+  # u4(0.65) >= u4(0.82)
+
+  # non-negativity
+  # forall u_i >= 0
   model = LpProblem(name='problem', sense=LpMaximize)
-  u1_35 = LpVariable(name='u1_35', lowBound=0, cat='Continuous')
-  u3_25 = LpVariable(name='u3_25', lowBound=0, cat='Continuous')
-
-  u1_7 = LpVariable(name='u1_7', lowBound=0, cat='Continuous')
-  u2_55 = LpVariable(name='u2_55', lowBound=0, cat='Continuous')
-  u3_12 = LpVariable(name='u3_12', lowBound=0, cat='Continuous')
-
-  u1_25 = LpVariable(name='u1_25', lowBound=0, cat='Continuous')
-  u2_30 = LpVariable(name='u2_30', lowBound=0, cat='Continuous')
-
-  u1_9 = LpVariable(name='u1_9', lowBound=0, cat='Continuous')
-  u2_62 = LpVariable(name='u2_62', lowBound=0, cat='Continuous')
-  u3_88 = LpVariable(name='u3_88', lowBound=0, cat='Continuous')
-
-  u1_62 = LpVariable(name='u1_62', lowBound=0, cat='Continuous')
-  u3_100 = LpVariable(name='u3_100', lowBound=0, cat='Continuous')
-
-  u1_0 = LpVariable(name='u1_0', lowBound=0, cat='Continuous')
-  u2_2 = LpVariable(name='u2_2', lowBound=0, cat='Continuous')
-  u3_0 = LpVariable(name='u3_0', lowBound=0, cat='Continuous')
-
-  u1_31 = LpVariable(name='u1_31', lowBound=0, cat='Continuous')
-  u2_32 = LpVariable(name='u2_32', lowBound=0, cat='Continuous')
-  u3_50 = LpVariable(name='u3_50', lowBound=0, cat='Continuous')
 
   epsilon = LpVariable(name='epsilon', lowBound=0, cat='Continuous')
+
+  # zmienne decyzyjne
+  variables = []
+  u1_0 = LpVariable(name='u1_0', lowBound=0, cat='Continuous')
+  u2_0 = LpVariable(name='u2_0', lowBound=0, cat='Continuous')
+  u3_0 = LpVariable(name='u3_0', lowBound=0, cat='Continuous')
+  u4_0 = LpVariable(name='u4_0', lowBound=0, cat='Continuous')
+  variables += [u1_0, u2_0, u3_0, u4_0]
+
+  u1_62 = LpVariable(name='u1_62', lowBound=0, cat='Continuous')
+  u1_68 = LpVariable(name='u1_68', lowBound=0, cat='Continuous')
+  u1_65 = LpVariable(name='u1_65', lowBound=0, cat='Continuous')
+  u1_71 = LpVariable(name='u1_71', lowBound=0, cat='Continuous')
+  variables += [u1_62, u1_68, u1_65, u1_71]
+
+  u2_25 = LpVariable(name='u1_25', lowBound=0, cat='Continuous')
+  u2_90 = LpVariable(name='u1_90', lowBound=0, cat='Continuous')
+  u2_93 = LpVariable(name='u1_93', lowBound=0, cat='Continuous')
+  u2_27 = LpVariable(name='u1_27', lowBound=0, cat='Continuous')
+  u2_44 = LpVariable(name='u1_44', lowBound=0, cat='Continuous')
+  variables += [u2_25, u2_90, u2_93, u2_27, u2_44]
+
+  u3_56 = LpVariable(name='u1_56', lowBound=0, cat='Continuous')
+  u3_65 = LpVariable(name='u1_65', lowBound=0, cat='Continuous')
+  u3_71 = LpVariable(name='u1_71', lowBound=0, cat='Continuous')
+  u3_88 = LpVariable(name='u1_88', lowBound=0, cat='Continuous')
+  variables += [u3_56, u3_65, u3_71, u3_88]
+
+  u4_49 = LpVariable(name='u1_49', lowBound=0, cat='Continuous')
+  u4_73 = LpVariable(name='u1_73', lowBound=0, cat='Continuous')
+  u4_50 = LpVariable(name='u1_50', lowBound=0, cat='Continuous')
+  u4_54 = LpVariable(name='u1_54', lowBound=0, cat='Continuous')
+  u4_60 = LpVariable(name='u1_60', lowBound=0, cat='Continuous')
+  u4_55 = LpVariable(name='u1_55', lowBound=0, cat='Continuous')
+  u4_67 = LpVariable(name='u1_67', lowBound=0, cat='Continuous')
+  u4_65 = LpVariable(name='u1_65', lowBound=0, cat='Continuous')
+  u4_82 = LpVariable(name='u1_82', lowBound=0, cat='Continuous')
+  variables += [u4_49, u4_73, u4_50, u4_54, u4_60, u4_55, u4_67, u4_65, u4_82]
+
+  for u in variables:
+    model += u >= 0
 
   # Ograniczenia problemu
   model += (u1_35 + u2_62 + u3_25 == u1_9 + u2_62 + u3_88, '#1 constraint')
@@ -171,7 +215,8 @@ if __name__ == '__main__':
   model += u3_0 >= 0
   model += u3_50 >= 0
   model += u3_100 >= 0
-  # Funkcja celu
+
+  # Objective function
   model += epsilon
   status = model.solve()
 
