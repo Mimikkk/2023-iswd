@@ -67,6 +67,9 @@ if __name__ == '__main__':
 
   # o6: 0.4 + 0.9 + 0.0 + 0.82 = 1
 
+  # normalization
+  # sum of u_i = 1
+  # forall u_i(0) = 0
 
   # Informacja o informacji preferencyjnej
   ##
