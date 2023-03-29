@@ -1,6 +1,10 @@
 import numpy as np
 from pulp import *
 
+# UTA Method
+# -
+
+
 if __name__ == '__main__':
   # Opt for:
   # C3 (Group 1 -- Optimistic  -- Future cost minimization)
