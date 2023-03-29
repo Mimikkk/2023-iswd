@@ -64,7 +64,6 @@ if __name__ == '__main__':
   # 1 -- Preferowane nad
   # ~ -- nierozróżnialne
 
-
   # max: e
   # o1: u1(0.83) + u2(0.25) + u3(0.80) + u4(0.65) >= u1(0.40) + u2(0.90) + u3(0.00) + u4(0.82) + e
   # o2: u1(0.78) + u2(0.27) + u3(0.71) + u4(0.50) >= u1(0.64) + u2(0.44) + u3(0.54) + u4(0.54) + e
@@ -155,9 +154,9 @@ if __name__ == '__main__':
 
   # variables
   vars = {}
-  for i in range(0, 100 + 1):
-    for u in range(1, 4 + 1):
-      vars[f'u{u}_{i:03d}'] = LpVariable(name=f'u{u}_{i:03d}', cat='Continuous', lowBound=0, upBound=1)
+  for u in range(0, 100 + 1):
+    for i in range(1, 4 + 1):
+      vars[f'u{i}_{u:03d}'] = LpVariable(name=f'u{i}_{u:03d}', cat='Continuous', lowBound=0, upBound=1)
   vars['epsilon'] = epsilon
 
   model.addConstraint(
@@ -202,6 +201,12 @@ if __name__ == '__main__':
   model.addConstraint(vars['u4_050'] >= vars['u4_060'])
   model.addConstraint(vars['u4_055'] >= vars['u4_067'])
   model.addConstraint(vars['u4_065'] >= vars['u4_082'])
+
+  for u in range(1, 4 + 1):
+    for i in range(2, 100 + 1):
+      model.addConstraint(vars[f'u{u}_{i - 1:03d}'] >= vars[f'u{u}_{i:03d}'])
+
+  model.addConstraint(vars[f'u1_000'] + vars[f'u2_000'] + vars[f'u3_000'] + vars[f'u4_000'] == 1)
 
   model.setObjective(epsilon)
   # Solve
@@ -255,4 +260,3 @@ if __name__ == '__main__':
     u1, u2, u3, u4 = [vars[f"u1_{g1:03d}"], vars[f"u2_{g2:03d}"], vars[f"u3_{g3:03d}"], vars[f"u4_{g4:03d}"]]
     v1, v2, v3, v4 = map(lambda x: x.value(), [u1, u2, u3, u4])
     print(f'u1_{g1:03d} = {v1}, u2_{g2:03d} = {v2}, u3_{g3:03d} = {v3}, u4_{g4:03d} = {v4}')
-
