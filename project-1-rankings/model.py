@@ -29,14 +29,14 @@ if __name__ == '__main__':
   # Random 1 0.5 - 1.0
   # 26, 0.71, 0.25, 0.88, 0.67 -- 17% / 24%
   # 9,  0.65, 0.30, 0.71, 0.55
-  # 26 -- High   C3 | Medium C4 --
   # 9  -- High   C4 | Medium C4 -- Preferowane      -- 4
+  # 26 -- High   C3 | Medium C4 --
 
   # Random 2
   # 17, 0.68, 0.40, 0.65, 0.60 --  9% / 20%
   # 5 , 0.62, 0.40, 0.56, 0.50
-  # 17 -- High   C3 | Medium C4 --
   # 5  -- Medium C4 | Medium C4 -- Nierozróżnialny  -- 2
+  # 17 -- High   C3 | Medium C4 --
 
   # Random 3
   # 1,  0.60, 0.93, 0.00, 0.73 -- 80% / 48%
