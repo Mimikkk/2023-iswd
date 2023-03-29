@@ -277,7 +277,7 @@ if __name__ == '__main__':
                 ] for criterion in range(4)]
 
   print(*utilities, sep='\n')
-  exhaust(map(model.addVariable, flattened(utilities)))
+  # exhaust(map(model.addVariable, flattened(utilities)))
   exhaust(map(model.addVariable, epsilons))
 
   # Funkcja celu
@@ -289,21 +289,25 @@ if __name__ == '__main__':
   model.addConstraint(sum(utility[-1] for utility in utilities) == 0)
   model.addConstraint(sum(utility[0] for utility in utilities) == 1)
 
-  # # Warunek monotoniczności — Typ koszt
-  for (v1, v2) in flattened(map(pairwise, utilities)):
-    model.addConstraint(v1 <= v2)
-
-  # # Warunek nieujemności
+  # Nieujemność
   for value in flattened(utilities):
     model.addConstraint(value >= 0)
 
+  # Warunek monotoniczności — Typ koszt
+  for (v1, v2) in flattened(map(pairwise, utilities)):
+    model.addConstraint(v1 <= v2)
+
+  model.addConstraint(u1[0] == 0.25)
+  model.addConstraint(u2[0] == 0.25)
+  model.addConstraint(u3[0] == 0.25)
+  model.addConstraint(u4[0] == 0.25)
+
   # odtworzenie rankingu referencyjnego
-  (ua, ub, uc, ud) = utilities
-  model.addConstraint(ua[87] + ub[3] + uc[100] + ud[61] >= ua[71] + ub[25] + uc[88] + ud[67] + epsilons[0])
-  model.addConstraint(ua[62] + ub[40] + uc[56] + ud[50] >= ua[60] + ub[93] + uc[0] + ud[73] + epsilons[1])
-  model.addConstraint(ua[83] + ub[25] + uc[80] + ud[65] >= ua[40] + ub[90] + uc[0] + ud[82] + epsilons[2])
-  model.addConstraint(ua[100] + ub[45] + uc[57] + ud[50] >= ua[80] + ub[6] + uc[100] + ud[67] + epsilons[3])
-  model.addConstraint(ua[64] + ub[44] + uc[54] + ud[54] == ua[78] + ub[27] + uc[71] + ud[50])
+  model.addConstraint(u1[87] + u2[3] + u3[100] + u4[61] - u1[71] - u2[25] - u3[88] - u4[67] >= epsilons[0])
+  model.addConstraint(u1[62] + u2[40] + u3[56] + u4[50] - u1[60] - u2[93] - u3[0] - u4[73] >= epsilons[1])
+  model.addConstraint(u1[83] + u2[25] + u3[80] + u4[65] - u1[40] - u2[90] - u3[0] - u4[82] >= epsilons[2])
+  model.addConstraint(u1[100] + u2[45] + u3[57] + u4[50] - u1[80] - u2[6] - u3[100] - u4[67] >= epsilons[3])
+  model.addConstraint(u1[64] + u2[44] + u3[54] + u4[54] - u1[78] - u2[27] - u3[71] - u4[50] == 0)
 
   print(f'status: {model.status}, {LpStatus[model.status]}')
 
@@ -341,12 +345,11 @@ if __name__ == '__main__':
 
   # wypisanie wartosci zmiennych
   for g1, g2, g3, g4 in variants.values():
-
     g1, g2, g3, g4 = map(lambda x: int(x * 100), [g1, g2, g3, g4])
-    u1, u2, u3, u4 = [ua[g1], ub[g2], uc[g3], ud[g4]]
-    v1, v2, v3, v4 = map(lambda x: x.value(), [u1, u2, u3, u4])
+    v1, v2, v3, v4 = map(lambda x: x.value(), [u1[g1], u2[g2], u3[g3], u4[g4]])
     print(f'u1_{g1:03d} = {v1}, u2_{g2:03d} = {v2}, u3_{g3:03d} = {v3}, u4_{g4:03d} = {v4}')
 
   print()
   for i in range(0, 100 + 1):
-    print(f'u1_{i:03d} = {ua[i].value()}, u2_{i:03d} = {ub[i].value()}, u3_{i:03d} = {uc[i].value()}, u4_{i:03d} = {ud[i].value()}')
+    print(
+      f'u1_{i:03d} = {u1[i].value()}, u2_{i:03d} = {u2[i].value()}, u3_{i:03d} = {u3[i].value()}, u4_{i:03d} = {u4[i].value()}')
