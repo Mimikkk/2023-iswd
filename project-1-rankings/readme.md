@@ -19,4 +19,4 @@ przez nas rozważane
 
 W eksperymentach rozważana jest tylko grupa 1 i 4.
 
-###### Link do raportu: [Overleaf](https://www.overleaf.com/4396724267phdxrzntnjnz)
+###### Link do raportu: [Overleaf](https://www.overleaf.com/project/641eff39f80fb63eae83fa4e)
