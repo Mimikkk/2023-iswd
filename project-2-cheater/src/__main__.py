@@ -1,7 +1,10 @@
+import asyncio
 from mod.game import Game
-from mod import players
+from mod.players.player import Player
+from inspect import getmembers, isclass
+from itertools import combinations_with_replacement
 
-def analyze(FirstPlayer, SecondPlayer, repeats=100):
+async def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player], repeats: int, timeout: float):
   stats = {
     "wins": [0, 0],
     "moves": [0, 0],
@@ -16,17 +19,24 @@ def analyze(FirstPlayer, SecondPlayer, repeats=100):
   errors = 0
 
   for t in range(repeats):
-    game = Game([FirstPlayer(name="first"), SecondPlayer(name="second")], log=False)
+    game = Game([FirstPlayer(name="first"), SecondPlayer(name="second")])
 
     error = False
     while True:
-      valid, player = game.takeTurn(log=False)
+      try:
+        async def task(): return game.takeTurn()
+        valid, player = await asyncio.wait_for(task(), timeout=timeout)
+      except asyncio.TimeoutError:
+        valid = False
+        player = game.player_move
+      # task
+
       if not valid:
         error = True
         stats["errors"][player] += 1
         errors += 1
         break
-      if game.isFinished(log=False):
+      if game.isFinished():
         stats["wins"][player] += 1
         break
 
@@ -62,5 +72,18 @@ def analyze(FirstPlayer, SecondPlayer, repeats=100):
   print(f"Errors         : {stats['errors']}")
   print(f"Total errors   : {errors}")
 
-if __name__ == '__main__':
-  analyze(players.SimplePlayer, players.SimplePlayer, repeats=1000)
+async def main():
+  from mod import players
+  players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
+
+  for (first, second) in combinations_with_replacement(players, r=2):
+    print(first.__name__, second.__name__)
+
+    try:
+      task = asyncio.create_task(analyze_matches(first, second, repeats=100, timeout=1))
+      await asyncio.wait({task}, timeout=5)
+    except asyncio.TimeoutError:
+      print("Timeout")
+    print()
+
+if __name__ == '__main__': asyncio.run(main())

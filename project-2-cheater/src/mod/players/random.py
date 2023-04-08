@@ -1,4 +1,4 @@
-from numpy.random import choice
+from random import choice
 
 from .player import Player
 from ..deck import Card
