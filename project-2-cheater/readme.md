@@ -1,4 +1,4 @@
-# Projekt II - Gra w oszusta
+# Projekt II — Gra w oszusta
 
 ## Opis
 
