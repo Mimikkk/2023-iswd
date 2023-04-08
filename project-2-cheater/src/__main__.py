@@ -4,7 +4,10 @@ from mod.players.player import Player
 from inspect import getmembers, isclass
 from itertools import combinations_with_replacement
 
-async def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player], repeats: int, timeout: float):
+async def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player], repeats: int, timeout: float,
+                          metrics: list[str] = None):
+  if metrics is None: metrics = ['wins', 'moves', 'cheats', 'errors', 'cards', 'checks', 'draw_decisions', 'pile_size']
+
   stats = {
     "wins": [0, 0],
     "moves": [0, 0],
@@ -60,30 +63,60 @@ async def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player],
 
   print(f"First  player  : {FirstPlayer.__name__}")
   print(f"Second player  : {SecondPlayer.__name__}")
-  print(f"Repeats        : {repeats}")
-  print(f"-" * 50)
-  print(f"Wins           : [{stats['wins'][0] / repeats * 100:.2f}%, {stats['wins'][1] / repeats * 100:.2f}%]")
-  print(f"Moves          : {stats['moves']}")
-  print(f"Cards          : {stats['cards']}")
-  print(f"Pile size      : {stats['pile_size']}")
-  print(f"Checks         : {stats['checks']}")
-  print(f"Draw decisions : {stats['draw_decisions']}")
-  print(f"Cheats         : {stats['cheats']}")
-  print(f"Errors         : {stats['errors']}")
-  print(f"Total errors   : {errors}")
+  if "wins" in metrics:
+    print(f"Wins           : [{stats['wins'][0] / repeats * 100:.2f}%, {stats['wins'][1] / repeats * 100:.2f}%]")
+  if "moves" in metrics:
+    print(f"Moves          : {stats['moves']}")
+  if "cheats" in metrics:
+    print(f"Cheats         : {stats['cheats']}")
+  if "errors" in metrics:
+    print(f"Errors         : {stats['errors']}")
+    print(f"Total errors   : {errors}")
+  if "cards" in metrics:
+    print(f"Cards          : {stats['cards']}")
+  if "checks" in metrics:
+    print(f"Checks         : {stats['checks']}")
+  if "draw_decisions" in metrics:
+    print(f"Draw decisions : {stats['draw_decisions']}")
+  if "pile_size" in metrics:
+    print(f"Pile size      : {stats['pile_size']}")
 
-async def main():
+async def analyze_all_vs_all(repeats: int, timeout: float, metrics: list[str] = None):
   from mod import players
   players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
 
   for (first, second) in combinations_with_replacement(players, r=2):
-    print(first.__name__, second.__name__)
+    # always tie
+    if first.__name__ == 'DrawPlayer' and second.__name__ == 'DrawPlayer': continue
 
     try:
-      task = asyncio.create_task(analyze_matches(first, second, repeats=100, timeout=1))
+      task = asyncio.create_task(analyze_matches(first, second, repeats=repeats, timeout=timeout, metrics=metrics))
       await asyncio.wait({task}, timeout=5)
     except asyncio.TimeoutError:
       print("Timeout")
-    print()
+    print(f"-" * 50)
+
+async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
+  from mod import players
+  players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
+
+  for player in players:
+    try:
+      task = asyncio.create_task(analyze_matches(used, player, repeats=repeats, timeout=timeout, metrics=metrics))
+      await asyncio.wait({task}, timeout=5)
+    except asyncio.TimeoutError:
+      print("Timeout")
+    print(f"-" * 50)
+
+async def main():
+  import mod.players as players
+  repeats = 100
+  timeout = 5
+  metrics = ['wins']
+  print(f"Repeats        : {repeats}")
+  print(f"Timeout        : {timeout}")
+  print(f"Metrics        : {metrics}")
+  print(f"-" * 50)
+  await analyze_all_vs_player(used=players.HotPlayer, repeats=repeats, timeout=timeout, metrics=metrics)
 
 if __name__ == '__main__': asyncio.run(main())
