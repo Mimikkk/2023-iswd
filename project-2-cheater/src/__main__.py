@@ -102,6 +102,7 @@ async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float
 
   for player in players:
     try:
+      print(player.__name__)
       task = asyncio.create_task(analyze_matches(used, player, repeats=repeats, timeout=timeout, metrics=metrics))
       await asyncio.wait({task}, timeout=5)
     except asyncio.TimeoutError:
@@ -117,6 +118,6 @@ async def main():
   print(f"Timeout        : {timeout}")
   print(f"Metrics        : {', '.join(metrics)}")
   print(f"-" * 50)
-  await analyze_all_vs_player(used=players.HotPlayer, repeats=repeats, timeout=timeout, metrics=metrics)
+  await analyze_all_vs_player(used=players.AlexosPlayer, repeats=repeats, timeout=timeout, metrics=metrics)
 
 if __name__ == '__main__': asyncio.run(main())
