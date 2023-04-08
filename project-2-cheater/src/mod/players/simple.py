@@ -13,6 +13,6 @@ class SimplePlayer(Player):
 
     return card, declaration
 
-  def checkCard(self, opponent_declaration):
-    if opponent_declaration in self.cards: return True
+  def checkCard(self, declared):
+    if declared in self.cards: return True
     return choice([True, False], p=[0.3, 0.7])

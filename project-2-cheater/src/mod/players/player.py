@@ -32,7 +32,7 @@ class Player(object):
   ###                 FALSE -> otherwise
   ### -- revealedCard - some card (X, Y). Only if I checked.
   ### -- noTakenCards - number of taken cards
-  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=True):
+  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
     if log: print(f"""
     Feedback = {self.name} 
     : checked this turn {checked} 

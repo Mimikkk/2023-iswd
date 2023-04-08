@@ -3,7 +3,7 @@ from numpy.random import randint
 from . import deck
 
 class Game(object):
-  def __init__(self, players, log=True):
+  def __init__(self, players, log=False):
     self.players = players
     self.deck = deck.create()
     self.player_cards = deck.shuffled(self.deck)
@@ -30,7 +30,7 @@ class Game(object):
     ### Which player moves
     self.player_move = randint(2)
 
-  def takeTurn(self, log=True):
+  def takeTurn(self, log=False):
     self.player_move = 1 - self.player_move
 
     if log:

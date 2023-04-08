@@ -2,14 +2,17 @@ from mod.game import Game
 from mod import players
 
 def analyze(FirstPlayer, SecondPlayer, repeats=100):
-  stats_wins = [0, 0]
-  stats_moves = [0, 0]
-  stats_cheats = [0, 0]
-  stats_errors = [0, 0]
-  stats_cards = [0, 0]
-  stats_checks = [0, 0]
-  stats_draw_decisions = [0, 0]
-  stats_pile_size = 0
+  stats = {
+    "wins": [0, 0],
+    "moves": [0, 0],
+    "cheats": [0, 0],
+    "errors": [0, 0],
+    "cards": [0, 0],
+    "checks": [0, 0],
+    "draw_decisions": [0, 0],
+    "pile_size": 0
+  }
+
   errors = 0
 
   for t in range(repeats):
@@ -20,42 +23,44 @@ def analyze(FirstPlayer, SecondPlayer, repeats=100):
       valid, player = game.takeTurn(log=False)
       if not valid:
         error = True
-        stats_errors[player] += 1
+        stats["errors"][player] += 1
         errors += 1
         break
       if game.isFinished(log=False):
-        stats_wins[player] += 1
+        stats["wins"][player] += 1
         break
 
-    stats_pile_size += len(game.pile)
+    stats["pile_size"] += len(game.pile)
     if not error:
-      for j in range(2):
-        stats_moves[j] += game.moves[j]
-        stats_cheats[j] += game.cheats[j]
-        stats_checks[j] += game.checks[j]
-        stats_draw_decisions[j] += game.draw_decisions[j]
-        stats_cards[j] += len(game.player_cards[j])
+      for player in range(2):
+        stats["moves"][player] += game.moves[player]
+        stats["cheats"][player] += game.cheats[player]
+        stats["checks"][player] += game.checks[player]
+        stats["draw_decisions"][player] += game.draw_decisions[player]
+        stats["cards"][player] += len(game.player_cards[player])
 
-  stats_pile_size /= (repeats - errors)
+  stats["pile_size"] /= (repeats - errors)
 
-  for j in range(2):
-    stats_moves[j] /= (repeats - errors)
-    stats_cheats[j] /= (repeats - errors)
-    stats_checks[j] /= (repeats - errors)
-    stats_draw_decisions[j] /= (repeats - errors)
-    stats_cards[j] /= (repeats - errors)
+  for player in range(2):
+    stats["moves"][player] /= (repeats - errors)
+    stats["cheats"][player] /= (repeats - errors)
+    stats["checks"][player] /= (repeats - errors)
+    stats["draw_decisions"][player] /= (repeats - errors)
+    stats["cards"][player] /= (repeats - errors)
 
   print(f"First  player  : {FirstPlayer.__name__}")
   print(f"Second player  : {SecondPlayer.__name__}")
-  print(f"Wins           : {stats_wins}")
-  print(f"Moves          : {stats_moves}")
-  print(f"Cards          : {stats_cards}")
-  print(f"Pile size      : {stats_pile_size}")
-  print(f"Checks         : {stats_checks}")
-  print(f"Draw decisions : {stats_draw_decisions}")
-  print(f"Cheats         : {stats_cheats}")
-  print(f"Errors         : {stats_errors}")
+  print(f"Repeats        : {repeats}")
+  print(f"-" * 50)
+  print(f"Wins           : [{stats['wins'][0] / repeats * 100:.2f}%, {stats['wins'][1] / repeats * 100:.2f}%]")
+  print(f"Moves          : {stats['moves']}")
+  print(f"Cards          : {stats['cards']}")
+  print(f"Pile size      : {stats['pile_size']}")
+  print(f"Checks         : {stats['checks']}")
+  print(f"Draw decisions : {stats['draw_decisions']}")
+  print(f"Cheats         : {stats['cheats']}")
+  print(f"Errors         : {stats['errors']}")
   print(f"Total errors   : {errors}")
 
 if __name__ == '__main__':
-  analyze(players.SimplePlayer, players.SimplePlayer, repeats=100)
+  analyze(players.SimplePlayer, players.SimplePlayer, repeats=1000)
