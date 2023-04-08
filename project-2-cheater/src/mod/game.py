@@ -19,15 +19,15 @@ class Game(object):
       if log:
         print(f"Player ({i + 1}): {self.players[i].name} received: {self.players[i].cards}")
 
-    ### Which card is on top
+    # Which card is on top
     self.true_card = None
-    ### Which card was declared by active player
+    # Which card was declared by active player
     self.declared_card = None
 
-    ### Init pile: [-1] = top card
+    # Init pile: [-1] = top card
     self.pile = []
 
-    ### Which player moves
+    # Which player moves
     self.player_move = randint(2)
 
   def takeTurn(self, log=False):
@@ -48,39 +48,39 @@ class Game(object):
       print(self.declared_card)
       print("")
 
-    activePlayer = self.players[self.player_move]
+    active = self.players[self.player_move]
     opponent = self.players[1 - self.player_move]
     self.moves[self.player_move] += 1
 
     self.previous_declaration = self.declared_card
-    decision = activePlayer.putCard(self.declared_card)
+    decision = active.putCard(self.declared_card)
 
     if decision == "draw":
-      if log: print(f"[+] {activePlayer.name} decided to draw cards")
+      if log: print(f"[+] {active.name} decided to draw cards")
 
       self.draw_decisions[self.player_move] += 1
 
-      toTake = self.pile[max([-3, -len(self.pile)]):]
-      for c in toTake: self.pile.remove(c)
-      activePlayer.takeCards(toTake)
-      for c in toTake: self.player_cards[self.player_move].append(c)
+      taken = self.pile[max([-3, -len(self.pile)]):]
+      for c in taken: self.pile.remove(c)
+      active.takeCards(taken)
+      for c in taken: self.player_cards[self.player_move].append(c)
 
       self.declared_card = None
       self.true_card = None
 
-      activePlayer.getCheckFeedback(False, False, False, None, None, log)
+      active.getCheckFeedback(False, False, False, None, None, log)
       opponent.getCheckFeedback(False, False, False, None, None, log)
 
     else:
       self.true_card, self.declared_card = decision
       if self.true_card != self.declared_card: self.cheats[self.player_move] += 1
 
-      if log: print("[+] " + activePlayer.name + " puts " + str(self.true_card) +
+      if log: print("[+] " + active.name + " puts " + str(self.true_card) +
                     " and declares " + str(self.declared_card))
 
       if not self.debugMove(): return False, self.player_move
 
-      activePlayer.cards.remove(self.true_card)
+      active.cards.remove(self.true_card)
       self.player_cards[self.player_move].remove(self.true_card)
       self.pile.append(self.true_card)
 
@@ -88,34 +88,34 @@ class Game(object):
         self.checks[1 - self.player_move] += 1
 
         if log: print("[!] " + opponent.name + ": " + "I want to check")
-        toTake = self.pile[max([-3, -len(self.pile)]):]
-        for c in toTake: self.pile.remove(c)
+        taken = self.pile[max([-3, -len(self.pile)]):]
+        for card in taken: self.pile.remove(card)
 
         if not self.true_card == self.declared_card:
           if log: print("\tYou are right!")
-          activePlayer.takeCards(toTake)
+          active.takeCards(taken)
 
-          activePlayer.getCheckFeedback(True, False, True, None, len(toTake), log)
-          opponent.getCheckFeedback(True, True, False, tuple(toTake[-1]), len(toTake), log)
+          active.getCheckFeedback(True, False, True, None, len(taken), log)
+          opponent.getCheckFeedback(True, True, False, tuple(taken[-1]), len(taken), log)
 
-          for c in toTake: self.player_cards[self.player_move].append(c)
+          for card in taken: self.player_cards[self.player_move].append(card)
         else:
           if log: print("\tYou are wrong!")
-          opponent.takeCards(toTake)
+          opponent.takeCards(taken)
 
-          activePlayer.getCheckFeedback(True, False, False, None, len(toTake), log)
-          opponent.getCheckFeedback(True, True, True, tuple(toTake[-1]), len(toTake), log)
+          active.getCheckFeedback(True, False, False, None, len(taken), log)
+          opponent.getCheckFeedback(True, True, True, tuple(taken[-1]), len(taken), log)
 
-          for c in toTake: self.player_cards[1 - self.player_move].append(c)
+          for card in taken: self.player_cards[1 - self.player_move].append(card)
 
         if log:
           print("Cards taken: ")
-          print(toTake)
+          print(taken)
 
         self.declared_card = None
         self.true_card = None
       else:
-        activePlayer.getCheckFeedback(False, False, False, None, None, log)
+        active.getCheckFeedback(False, False, False, None, None, log)
         opponent.getCheckFeedback(False, False, False, None, None, log)
 
     if not self.debugGeneral(): return False, self.player_move
