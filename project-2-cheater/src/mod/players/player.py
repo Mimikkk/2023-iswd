@@ -3,35 +3,35 @@ class Player(object):
     self.name = name
     self.cards = []
 
-  ### -------------------------------------------------------------
+  # -------------------------------------------------------------
 
-  ### TO BE IMPLEMENTED - player's strategy
-  ### input: declared card, i.e., the card which is supposed
-  ### to be the top card of the pile: If None - you can put any card you want because
-  ### (a) it is the first turn (pile is empty) or (b) some cards were drawn in the previous turn)
-  ### output: - player's true decision, player's declaration (if not equal - (s)he cheats)
+  # TO BE IMPLEMENTED - player's strategy
+  # input: declared card, i.e., the card which is supposed
+  # to be the top card of the pile: If None - you can put any card you want because
+  # (a) it is the first turn (pile is empty) or (b) some cards were drawn in the previous turn)
+  # output: - player's true decision, player's declaration (if not equal - (s)he cheats)
 
   def putCard(self, declared_card):
-    ### DO NOT REMOVE TRUE CARD cards.remove!!!
-    ### return an object (not id): self.cards[id], not id
-    ### for instance: return self.cards[0], self.cards[0]
-    ### IMPORTANT: If you want to draw cards instead of put, return "draw"
-    ### for instance: return "draw"
+    # DO NOT REMOVE TRUE CARD cards.remove!!!
+    # return an object (not id): self.cards[id], not id
+    # for instance: return self.cards[0], self.cards[0]
+    # IMPORTANT: If you want to draw cards instead of put, return "draw"
+    # for instance: return "draw"
     return self.cards[0], self.cards[0]
 
-    ### TO BE IMPLEMENTED - Decide whether to check or not opponent's move (return True or False)
+    # TO BE IMPLEMENTED - Decide whether to check or not opponent's move (return True or False)
   def checkCard(self, opponent_declaration):
     pass
 
-  ### Notification sent at the end of a round
-  ### One may implement this method, capture data, and use it to get extra info
-  ### -- checked = TRUE -> someone checked. If FALSE, the remaining inputs do not play any role
-  ### -- iChecked = TRUE -> I decided to check my opponent (so it was my turn);
-  ###               FALSE -> my opponent checked and it was his turn
-  ### -- iDrewCards = TRUE -> I drew cards (so I checked but was wrong or my opponent checked and was right);
-  ###                 FALSE -> otherwise
-  ### -- revealedCard - some card (X, Y). Only if I checked.
-  ### -- noTakenCards - number of taken cards
+  # Notification sent at the end of a round
+  # One may implement this method, capture data, and use it to get extra info
+  # -- is_check = TRUE -> someone is_check. If FALSE, the remaining inputs do not play any role
+  # -- is_player = TRUE -> I decided to check my opponent (so it was my turn);
+  #               FALSE -> my opponent is_check and it was his turn
+  # -- is_failure = TRUE -> I drew cards (so I is_check but was wrong or my opponent is_check and was right);
+  #                 FALSE -> otherwise
+  # -- revealed - some card (X, Y). Only if I is_check.
+  # -- taken_count - number of taken cards
   def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
     if log: print(f"""
     Feedback = {self.name} 
@@ -43,10 +43,10 @@ class Player(object):
     """)
 
 
-  ### Init player's hand
+  # Init player's hand
   def startGame(self, cards):
     self.cards = cards
 
-  ### Add some cards to player's hand (if (s)he checked opponent's move, but (s)he was wrong)
+  # Add some cards to player's hand (if (s)he is_check opponent's move, but (s)he was wrong)
   def takeCards(self, taken):
     self.cards = self.cards + taken
