@@ -115,7 +115,7 @@ async def main():
   metrics = ['wins']
   print(f"Repeats        : {repeats}")
   print(f"Timeout        : {timeout}")
-  print(f"Metrics        : {metrics}")
+  print(f"Metrics        : {', '.join(metrics)}")
   print(f"-" * 50)
   await analyze_all_vs_player(used=players.HotPlayer, repeats=repeats, timeout=timeout, metrics=metrics)
 

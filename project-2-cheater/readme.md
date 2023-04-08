@@ -13,15 +13,6 @@ zamierza oszukać. Gracz może także zrezygnować z kładzenia karty na rzecz p
 Jeśli gracz oszukał, a przeciwnik sprawdził, to bierze 3 karty ze stosu. Jeśli gracz nie oszukał, a przeciwnik
 sprawdził, to przeciwnik zabiera 3 karty z góry stosu.
 
-## Przestrzeń akcji
-
-Przestrzeń akcji gracza składa się z 4 akcji:
-
-* `play_card(card)` — położenie karty na stosie
-* `take_cards(n)` — zabranie `n` kart ze stosu
-* `cheat()` — oszustwo
-* `check()` — sprawdzenie
-
 ## Ocenianie
 
 Projekt zostanie oceniony na podstawie jakości kodu i strategii gracza. Kod powinien być czytelny i zgodny z konwencjami
