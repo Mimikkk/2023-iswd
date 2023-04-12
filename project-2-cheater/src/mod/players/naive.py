@@ -24,6 +24,7 @@ class NaivePlayer(Player):
   def on_right_accusation(self, revealed, taken_count): pass
   def on_caught(self, taken_count): pass
   def on_honest(self, taken_count): pass
+  def on_draw(self): pass
 
   def declare(self, declared):
     valid_held_cards = [card for card in self.cards if not declared or card[0] > declared[0]]

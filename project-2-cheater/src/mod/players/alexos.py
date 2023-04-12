@@ -13,18 +13,24 @@ class AlexosPlayer(Player):
   def __init__(self, name):
     super().__init__(name)
     self.used: set[Card] = set()
+    self.previous_declaration = None
+    self.declared = None
 
   def on_start(self):
     print("I started")
     pass
 
   def on_take(self, taken):
-    print("I took", taken)
+    print(f"I took cards {taken}")
     pass
 
+  def on_opponent_draw(self):
+    print("Opponent drew a card")
+
   def on_feedback(self, is_accusation, is_player, has_player_drawn_cards, revealed, taken_count):
-    print("I got feedback", is_accusation, is_player, has_player_drawn_cards, revealed, taken_count)
+    print("I got feedback")
     if is_accusation: self.on_accusation(is_player, has_player_drawn_cards, revealed, taken_count)
+    elif self.previous_declaration and not self.declared: self.on_opponent_draw()
 
   def on_accusation(self, is_player, has_player_drawn_cards, revealed, taken_count):
     print("there was an accusation!", is_player, has_player_drawn_cards, revealed, taken_count)
@@ -50,9 +56,13 @@ class AlexosPlayer(Player):
     print(f"I was caught so I took {taken_count} cards.")
 
   def on_honest(self, taken_count):
-    print(f"I was honest but accused so they took {taken_count} cards.")
+    print(f"I was honest and accused so they took {taken_count} cards.")
 
   def declare(self, declared):
+    print(f"Declared card {declared}")
+    self.previous_declaration = self.declared
+    self.declared = declared
+
     valid_held_cards = [card for card in self.cards if not declared or card[0] > declared[0]]
     invalid_held_cards = [card for card in self.cards if card not in valid_held_cards]
 
@@ -66,7 +76,10 @@ class AlexosPlayer(Player):
     return card, card
 
   def should_accuse(self, declared):
-    return True
+    self.previous_declaration = self.declared
+    self.declared = declared
+
+    return False
 
   def putCard(self, declared_card):
     return self.declare(declared_card)
