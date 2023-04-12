@@ -1,4 +1,4 @@
-from numpy.random import choice
+from random import choice
 
 from .player import Player
 
@@ -20,20 +20,31 @@ class AlexosPlayer(Player):
     print("I got feedback", is_accusation, is_player, has_player_drawn_cards, revealed, taken_count)
     if is_accusation: self.on_accusation(is_player, has_player_drawn_cards, revealed, taken_count)
 
-  def on_accusation(self, is_player, has_player_drawn_cards, revealed, cards_taken):
-    print("I was accused or accused someone")
+  def on_accusation(self, is_player, has_player_drawn_cards, revealed, taken_count):
+    print("there was an accusation!", is_player, has_player_drawn_cards, revealed, taken_count)
+    if (is_player):
+      if (has_player_drawn_cards):
+        self.on_caught(revealed, taken_count)
+      else:
+        self.on_honest(revealed, taken_count)
+    else:
+      if (has_player_drawn_cards):
+        self.on_right_accusation(revealed, taken_count)
+      else:
+        self.on_wrong_accusation(revealed, taken_count)
 
-  def on_wrong_accusation(self):
-    print("I was wrong")
 
-  def on_right_accusation(self):
-    print("I was right")
+  def on_wrong_accusation(self, revealed, taken_count):
+    print(f"I was wrong so I took took {taken_count} cards. Also the top card was {revealed}.")
 
-  def on_caught(self):
-    print("I was caught by opponent")
+  def on_right_accusation(self, revealed, taken_count):
+    print(f"I was right so opponent took {taken_count} cards. Also the top card was {revealed}.")
 
-  def on_uncaught(self):
-    print("I was caught by opponent")
+  def on_caught(self, revealed, taken_count):
+    print(f"I was caught by opponent so I took {taken_count} cards. Also the top card was {revealed}.")
+
+  def on_honest(self, revealed, taken_count):
+    print(f"I was honest but falsely accused by opponent so he took {taken_count} cards. Also the top card was {revealed}.")
 
   def declare(self, declared):
     valid_cards = [card for card in self.cards if not declared or card[0] > declared[0]]

@@ -1,4 +1,4 @@
-from numpy.random import choice
+from random import choice
 
 from .player import Player
 
@@ -15,19 +15,29 @@ class NaivePlayer(Player):
   def on_feedback(self, is_accusation, is_player, has_player_drawn_cards, revealed, taken_count):
     if is_accusation: self.on_accusation(is_player, has_player_drawn_cards, revealed, taken_count)
 
-  def on_accusation(self, is_player, has_player_drawn_cards, revealed, cards_taken):
+  def on_accusation(self, is_player, has_player_drawn_cards, revealed, taken_count):
+    if (is_player):
+      if (has_player_drawn_cards):
+        self.on_caught(taken_count)
+      else:
+        self.on_uncaught(taken_count)
+    else:
+      if (has_player_drawn_cards):
+        self.on_right_accusation(revealed, taken_count)
+      else:
+        self.on_wrong_accusation(revealed, taken_count)
+
+
+  def on_wrong_accusation(self, revealed, taken_count):
     pass
 
-  def on_wrong_accusation(self):
+  def on_right_accusation(self, revealed, taken_count):
     pass
 
-  def on_right_accusation(self):
+  def on_caught(self, taken_count):
     pass
 
-  def on_caught(self):
-    pass
-
-  def on_uncaught(self):
+  def on_uncaught(self, taken_count):
     pass
 
   def declare(self, declared):
