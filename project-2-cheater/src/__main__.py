@@ -98,7 +98,7 @@ async def analyze_all_vs_all(repeats: int, timeout: float, metrics: list[str] = 
 
 async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
   from mod import players
-  players = [players.SimplePlayer]
+  players = [players.NaivePlayer]
   # players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
   for player in players:
     try:
