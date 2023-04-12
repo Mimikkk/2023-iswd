@@ -98,8 +98,8 @@ async def analyze_all_vs_all(repeats: int, timeout: float, metrics: list[str] = 
 
 async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
   from mod import players
-  players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
-
+  players = [players.SimplePlayer]
+  # players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
   for player in players:
     try:
       print(player.__name__)
@@ -111,7 +111,7 @@ async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float
 
 async def main():
   import mod.players as players
-  repeats = 100
+  repeats = 1
   timeout = 5
   metrics = ['wins']
   print(f"Repeats        : {repeats}")

@@ -25,12 +25,12 @@ class Player(object):
 
   # Notification sent at the end of a round
   # One may implement this method, capture data, and use it to get extra info
-  # -- is_check = TRUE -> someone is_check. If FALSE, the remaining inputs do not play any role
+  # -- is_accusation = TRUE -> someone is_accusation. If FALSE, the remaining inputs do not play any role
   # -- is_player = TRUE -> I decided to check my opponent (so it was my turn);
-  #               FALSE -> my opponent is_check and it was his turn
-  # -- is_failure = TRUE -> I drew cards (so I is_check but was wrong or my opponent is_check and was right);
+  #               FALSE -> my opponent is_accusation and it was his turn
+  # -- is_failure = TRUE -> I drew cards (so I is_accusation but was wrong or my opponent is_accusation and was right);
   #                 FALSE -> otherwise
-  # -- revealed - some card (X, Y). Only if I is_check.
+  # -- revealed - some card (X, Y). Only if I is_accusation.
   # -- taken_count - number of taken cards
   def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
     if log: print(f"""
@@ -47,6 +47,6 @@ class Player(object):
   def startGame(self, cards):
     self.cards = cards
 
-  # Add some cards to player's hand (if (s)he is_check opponent's move, but (s)he was wrong)
+  # Add some cards to player's hand (if (s)he is_accusation opponent's move, but (s)he was wrong)
   def takeCards(self, taken):
     self.cards = self.cards + taken
