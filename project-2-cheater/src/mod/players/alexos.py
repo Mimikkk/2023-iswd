@@ -80,19 +80,19 @@ class AlexosPlayer(Player):
     print(f"I wonder whether {declared} is a dirty trick.")
     return False
 
-  def putCard(self, declared_card, *args, **kwargs):
+  def putCard(self, declared_card):
     return self.declare(declared_card)
 
-  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False, *args, **kwargs):
+  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
     self.on_feedback(checked, iChecked, iDrewCards, revealedCard, noTakenCards)
 
-  def checkCard(self, opponent_declaration, *args, **kwargs):
+  def checkCard(self, opponent_declaration):
     return self.should_accuse(opponent_declaration)
 
-  def startGame(self, cards, *args, **kwargs):
+  def startGame(self, cards, state):
     super().startGame(cards)
     self.on_start()
 
-  def takeCards(self, taken, *args, **kwargs):
+  def takeCards(self, taken):
     super().takeCards(taken)
     self.on_take(taken)

@@ -13,6 +13,7 @@ class DanielosPlayer(Player):
   def __init__(self, name: str):
     super().__init__(name)
     self.suspicious = set()
+    self.game = None
 
   def on_start(self):
     self.suspicious.update(self.cards)
@@ -72,24 +73,22 @@ class DanielosPlayer(Player):
     return card, declaration
 
   def should_accuse(self, declared: Card):
-    print(self.cards)
-    print(self.suspicious)
     if declared in self.suspicious: return True
     return False
 
-  def putCard(self, declared_card, *args, **kwargs):
+  def putCard(self, declared_card):
     return self.declare(declared_card)
 
-  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False, *args, **kwargs):
+  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
     self.on_feedback(checked, iChecked, iDrewCards, revealedCard, noTakenCards)
 
-  def checkCard(self, opponent_declaration, *args, **kwargs):
+  def checkCard(self, opponent_declaration):
     return self.should_accuse(opponent_declaration)
 
-  def startGame(self, cards, *args, **kwargs):
-    super().startGame(cards)
+  def startGame(self, cards, state):
+    super().startGame(cards, state)
     self.on_start()
 
-  def takeCards(self, taken, *args, **kwargs):
+  def takeCards(self, taken):
     super().takeCards(taken)
     self.on_take(taken)

@@ -8,7 +8,7 @@ class Game(object):
     self.player_cards = deck.shuffled(self.deck)
     self.game_deck = self.player_cards[0] + self.player_cards[1]
 
-    for i, cards in zip([0, 1], self.player_cards): self.players[i].startGame(cards.copy())
+    for i, cards in zip([0, 1], self.player_cards): self.players[i].startGame(cards.copy(), self)
     self.true_card = None
     self.declared_card = None
     self.pile = []
@@ -20,7 +20,7 @@ class Game(object):
     active = self.players[self.player_move]
     opponent = self.players[1 - self.player_move]
 
-    decision = active.putCard(self.declared_card, self)
+    decision = active.putCard(self.declared_card)
     if decision == "draw":
       taken = self.pile[max([-3, -len(self.pile)]):]
       for card in taken: self.pile.remove(card)
@@ -35,7 +35,7 @@ class Game(object):
       active.cards.remove(self.true_card)
       self.pile.append(self.true_card)
 
-      if opponent.checkCard(self.declared_card, self):
+      if opponent.checkCard(self.declared_card):
         taken = self.pile[max([-3, -len(self.pile)]):]
         for card in taken: self.pile.remove(card)
 

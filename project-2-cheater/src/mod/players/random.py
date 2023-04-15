@@ -5,7 +5,7 @@ from ..deck import Card
 
 class RandomPlayer(Player):
 
-  def putCard(self, declared, *args, **kwargs) -> tuple[Card, Card] | str:
+  def putCard(self, declared) -> tuple[Card, Card] | str:
     should_draw = len(self.cards) == 1 and declared is not None and self.cards[0][0] < declared[0]
 
     if should_draw: return "draw"
@@ -20,5 +20,5 @@ class RandomPlayer(Player):
 
     return card, declaration
 
-  def checkCard(self, declared, *args, **kwargs):
+  def checkCard(self, declared):
     return choice([True, False])

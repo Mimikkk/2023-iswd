@@ -20,7 +20,6 @@ async def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player],
         player = game.player_move
 
       if game.is_finished():
-        print(player)
         stats["wins"][player] += 1
         break
 
@@ -59,7 +58,6 @@ async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float
 
 async def analyze(first: type[Player], second: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
   try:
-    print(second.__name__)
     task = asyncio.create_task(analyze_matches(first, second, repeats=repeats, timeout=timeout, metrics=metrics))
     await asyncio.wait({task}, timeout=5)
   except asyncio.TimeoutError:

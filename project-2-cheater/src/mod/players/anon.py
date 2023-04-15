@@ -1,14 +1,12 @@
 import random
 
-from numpy.random import choice
 from .player import Player
-from ..deck import Card
 
 class AnonPlayer(Player):
   def __init__(self, name):
     super().__init__(name)
 
-  def putCard(self, declared_card, *args, **kwargs):
+  def putCard(self, declared_card):
     valid_cards = [card for card in self.cards if (declared_card is None) or (card[0] >= declared_card[0])]
     invalid_cards = [card for card in self.cards if card not in valid_cards]
 
@@ -23,7 +21,7 @@ class AnonPlayer(Player):
       true_card = random.choice(valid_cards)
       return true_card, true_card
 
-  def checkCard(self, opponent_declaration, *args, **kwargs):
+  def checkCard(self, opponent_declaration):
     if not self.cards:
       return False
 
