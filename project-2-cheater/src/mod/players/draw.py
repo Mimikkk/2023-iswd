@@ -1,9 +1,8 @@
-from numpy.random import choice
 from .player import Player
 
 class DrawPlayer(Player):
-  def putCard(self, declared):
+  def putCard(self, declared_card):
     return "draw"
 
-  def checkCard(self, declared):
-    return choice([False, False])
+  def checkCard(self, opponent_declaration):
+    return False

@@ -1,11 +1,10 @@
 from random import choice
 
 from .player import Player
-from ..deck import Card
 
 class RandomPlayer(Player):
 
-  def putCard(self, declared) -> tuple[Card, Card] | str:
+  def putCard(self, declared):
     should_draw = len(self.cards) == 1 and declared is not None and self.cards[0][0] < declared[0]
 
     if should_draw: return "draw"
