@@ -2,7 +2,6 @@ from random import choice
 
 from .extended_player import ExtendedPlayer
 
-Card = tuple[int, int]
 class DanielosPlayer(ExtendedPlayer):
   Cards = tuple(
     (rank, color)
@@ -17,10 +16,10 @@ class DanielosPlayer(ExtendedPlayer):
   def on_start(self):
     self.suspicious.update(self.cards)
 
-  def on_take(self, taken: list[Card]):
+  def on_take(self, taken):
     self.suspicious.update(taken)
 
-  def declare(self, declared: Card | None):
+  def declare(self, declared):
     valid_held_cards = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
 
     if not valid_held_cards: return "draw"
@@ -28,6 +27,6 @@ class DanielosPlayer(ExtendedPlayer):
     card = declaration = choice(valid_held_cards)
     return card, declaration
 
-  def should_accuse(self, declared: Card):
+  def should_accuse(self, declared):
     if declared in self.suspicious: return True
     return False
