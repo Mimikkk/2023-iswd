@@ -10,30 +10,34 @@ class AlexosPlayer(Player):
     for color in range(4)
   )
 
-  def __init__(self, name):
+  def __init__(self, name: str):
     super().__init__(name)
     self.used: set[Card] = set()
-    self.previous_declaration = None
-    self.declared = None
 
   def on_start(self):
     print("I started")
     pass
 
-  def on_take(self, taken):
+  def on_take(self, taken: list[Card]):
     print(f"I took cards {taken}")
     pass
 
   def on_opponent_draw(self):
-    print("Opponent drew a card")
+    print("Opponent drew a few cards")
 
-  def on_feedback(self, is_accusation, is_player, has_player_drawn_cards, revealed, taken_count):
+  def on_feedback(
+      self,
+      is_accusation: bool,
+      is_player: bool,
+      has_player_drawn_cards: bool,
+      revealed: Card | None,
+      taken_count: int | None
+  ):
     print("I got feedback")
     if is_accusation: self.on_accusation(is_player, has_player_drawn_cards, revealed, taken_count)
-    elif self.previous_declaration and not self.declared: self.on_opponent_draw()
 
   def on_accusation(self, is_player, has_player_drawn_cards, revealed, taken_count):
-    print("there was an accusation!", is_player, has_player_drawn_cards, revealed, taken_count)
+    print("there was an accusation!")
     if is_player:
       if has_player_drawn_cards:
         self.on_wrong_accusation(revealed, taken_count)
@@ -45,23 +49,21 @@ class AlexosPlayer(Player):
       else:
         self.on_honest(taken_count)
 
-
-  def on_wrong_accusation(self, revealed, taken_count):
+  def on_wrong_accusation(self, revealed: Card, taken_count: int):
     print(f"I was wrong so I took took {taken_count} cards. Also the top card was {revealed}.")
 
-  def on_right_accusation(self, revealed, taken_count):
+  def on_right_accusation(self, revealed: Card, taken_count: int):
     print(f"I was right so they took {taken_count} cards. Also the top card was {revealed}.")
 
-  def on_caught(self, taken_count):
+  def on_caught(self, taken_count: int):
     print(f"I was caught so I took {taken_count} cards.")
 
-  def on_honest(self, taken_count):
+  def on_honest(self, taken_count: int):
     print(f"I was honest and accused so they took {taken_count} cards.")
 
-  def declare(self, declared):
+  def declare(self, declared: Card | None):
+    if not declared: self.on_opponent_draw()
     print(f"Declared card {declared}")
-    self.previous_declaration = self.declared
-    self.declared = declared
 
     valid_held_cards = [card for card in self.cards if not declared or card[0] > declared[0]]
     invalid_held_cards = [card for card in self.cards if card not in valid_held_cards]
@@ -72,13 +74,10 @@ class AlexosPlayer(Player):
     if not valid_held_cards: return "draw"
 
     card = choice(valid_held_cards)
-    # declaration = choice(not_held_declarable_cards)
     return card, card
 
-  def should_accuse(self, declared):
-    self.previous_declaration = self.declared
-    self.declared = declared
-
+  def should_accuse(self, declared: Card):
+    print(f"I wonder whether {declared} is a dirty trick.")
     return False
 
   def putCard(self, declared_card):

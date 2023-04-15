@@ -16,8 +16,6 @@ class Game(object):
 
     for i, cards in zip([0, 1], self.player_cards):
       self.players[i].startGame(cards.copy())
-      if log:
-        print(f"Player ({i + 1}): {self.players[i].name} received: {self.players[i].cards}")
 
     # Which card is on top
     self.true_card = None
@@ -33,99 +31,46 @@ class Game(object):
   def takeTurn(self, log=False):
     self.player_move = 1 - self.player_move
 
-    if log:
-      print("")
-      print("")
-      print("==== CURRENT STATE ================================")
-      print("==== " + self.players[self.player_move].name + " MOVES ====")
-      print("Player (0): " + self.players[0].name + " hand:")
-      print(self.players[0].cards)
-      print("Player (1): " + self.players[1].name + " hand:")
-      print(self.players[1].cards)
-      print("Pile: ")
-      print(self.pile)
-      print("Declared top card:")
-      print(self.declared_card)
-      print("")
-
     active = self.players[self.player_move]
     opponent = self.players[1 - self.player_move]
-    self.moves[self.player_move] += 1
 
-    self.previous_declaration = self.declared_card
     decision = active.putCard(self.declared_card)
-
     if decision == "draw":
-      if log: print(f"[+] {active.name} decided to draw cards")
-
-      self.draw_decisions[self.player_move] += 1
-
       taken = self.pile[max([-3, -len(self.pile)]):]
-      for c in taken: self.pile.remove(c)
+      for card in taken: self.pile.remove(card)
       active.takeCards(taken)
-      for c in taken: self.player_cards[self.player_move].append(c)
 
-      self.declared_card = None
-      self.true_card = None
-
-      active.getCheckFeedback(False, False, False, None, None, log)
-      opponent.getCheckFeedback(False, False, False, None, None, log)
-
+      self.declared_card = self.true_card = None
+      active.getCheckFeedback(False, False, False, None, None)
+      opponent.getCheckFeedback(False, False, False, None, None)
     else:
       self.true_card, self.declared_card = decision
-      if self.true_card != self.declared_card: self.cheats[self.player_move] += 1
-
-      if log: print("[+] " + active.name + " puts " + str(self.true_card) +
-                    " and declares " + str(self.declared_card))
-
-      if not self.debugMove(): return False, self.player_move
 
       active.cards.remove(self.true_card)
-      self.player_cards[self.player_move].remove(self.true_card)
       self.pile.append(self.true_card)
 
       if opponent.checkCard(self.declared_card):
-        self.checks[1 - self.player_move] += 1
-
-        if log: print("[!] " + opponent.name + ": " + "I want to check")
         taken = self.pile[max([-3, -len(self.pile)]):]
         for card in taken: self.pile.remove(card)
 
         if not self.true_card == self.declared_card:
-          if log: print("\tYou are right!")
           active.takeCards(taken)
-
-          active.getCheckFeedback(True, False, True, None, len(taken), log)
-          opponent.getCheckFeedback(True, True, False, tuple(taken[-1]), len(taken), log)
-
-          for card in taken: self.player_cards[self.player_move].append(card)
+          active.getCheckFeedback(True, False, True, None, len(taken))
+          opponent.getCheckFeedback(True, True, False, tuple(taken[-1]), len(taken))
         else:
-          if log: print("\tYou are wrong!")
           opponent.takeCards(taken)
+          active.getCheckFeedback(True, False, False, None, len(taken))
+          opponent.getCheckFeedback(True, True, True, tuple(taken[-1]), len(taken))
 
-          active.getCheckFeedback(True, False, False, None, len(taken), log)
-          opponent.getCheckFeedback(True, True, True, tuple(taken[-1]), len(taken), log)
-
-          for card in taken: self.player_cards[1 - self.player_move].append(card)
-
-        if log:
-          print("Cards taken: ")
-          print(taken)
-
-        self.declared_card = None
-        self.true_card = None
+        self.declared_card = self.true_card = None
       else:
-        active.getCheckFeedback(False, False, False, None, None, log)
-        opponent.getCheckFeedback(False, False, False, None, None, log)
+        active.getCheckFeedback(False, False, False, None, None)
+        opponent.getCheckFeedback(False, False, False, None, None)
 
-    if not self.debugGeneral(): return False, self.player_move
     return True, self.player_move
 
   def isFinished(self, log=False):
-    if len(self.players[self.player_move].cards) == 0:
-      if log: print(self.players[self.player_move].name + " wins!")
-      return True
-    return False
+    return not self.players[self.player_move].cards
 
   def debugMove(self):
     if (self.previous_declaration is not None) and (self.true_card[0] < self.previous_declaration[0]) and \
