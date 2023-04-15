@@ -46,8 +46,8 @@ async def analyze_all_vs_all(repeats: int, timeout: float, metrics: list[str] = 
 
 async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
   from mod import players
-  players = [players.NaivePlayer]
-  # players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
+  players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
+
   for player in players:
     try:
       print(player.__name__)
@@ -56,6 +56,16 @@ async def analyze_all_vs_player(used: type[Player], repeats: int, timeout: float
     except asyncio.TimeoutError:
       print("Timeout")
     print(f"-" * 50)
+
+async def analyze(first: type[Player], second: type[Player], repeats: int, timeout: float, metrics: list[str] = None):
+  try:
+    print(second.__name__)
+    task = asyncio.create_task(analyze_matches(first, second, repeats=repeats, timeout=timeout, metrics=metrics))
+    await asyncio.wait({task}, timeout=5)
+  except asyncio.TimeoutError:
+    print("Timeout")
+  print(f"-" * 50)
+
 
 async def main():
   import mod.players as players
@@ -66,6 +76,6 @@ async def main():
   print(f"Timeout        : {timeout}")
   print(f"Metrics        : {', '.join(metrics)}")
   print(f"-" * 50)
-  await analyze_all_vs_player(used=players.DanielosPlayer, repeats=repeats, timeout=timeout, metrics=metrics)
+  await analyze(players.DanielosPlayer, players.SimplePlayer, repeats=repeats, timeout=timeout, metrics=metrics)
 
 if __name__ == '__main__': asyncio.run(main())
