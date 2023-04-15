@@ -1,10 +1,10 @@
 from random import choice
 
-from .player import Player
+from .extended_player import ExtendedPlayer
 
-class RandomPlayer(Player):
+class RandomPlayer(ExtendedPlayer):
 
-  def putCard(self, declared):
+  def declare(self, declared):
     should_draw = len(self.cards) == 1 and declared is not None and self.cards[0][0] < declared[0]
 
     if should_draw: return "draw"
@@ -19,5 +19,5 @@ class RandomPlayer(Player):
 
     return card, declaration
 
-  def checkCard(self, declared):
+  def should_accuse(self, declared):
     return choice([True, False])

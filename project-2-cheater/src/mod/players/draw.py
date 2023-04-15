@@ -1,8 +1,5 @@
-from .player import Player
+from .extended_player import ExtendedPlayer
 
-class DrawPlayer(Player):
-  def putCard(self, declared_card):
-    return "draw"
-
-  def checkCard(self, opponent_declaration):
-    return False
+class DrawPlayer(ExtendedPlayer):
+  def declare(self, declared): return "draw"
+  def should_accuse(self, declared): return False
