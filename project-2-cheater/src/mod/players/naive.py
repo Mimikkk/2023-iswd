@@ -73,7 +73,7 @@ class NaivePlayer(Player):
     return self.should_accuse(opponent_declaration)
 
   def startGame(self, cards, state):
-    super().startGame(cards)
+    super().startGame(cards, state)
     self.on_start()
 
   def takeCards(self, taken):
