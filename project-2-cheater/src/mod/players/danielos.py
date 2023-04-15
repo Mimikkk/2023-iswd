@@ -27,7 +27,7 @@ class DanielosPlayer(ExtendedPlayer):
   def on_honest(self, taken_count: int): ...
 
   def declare(self, declared: Card | None):
-    valid_held_cards = declared and [card for card in self.cards if card[0] > declared[0]] or self.cards
+    valid_held_cards = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
 
     if not valid_held_cards: return "draw"
 

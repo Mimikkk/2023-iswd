@@ -30,7 +30,7 @@ class AlexosPlayer(ExtendedPlayer):
 
   def declare(self, declared: Card | None):
     print(f"I'm declaring a card. I've started with {declared}.")
-    valid_held_cards = [card for card in self.cards if not declared or card[0] > declared[0]]
+    valid_held_cards = [card for card in self.cards if not declared or card[0] >= declared[0]]
 
     if not valid_held_cards: return "draw"
 
