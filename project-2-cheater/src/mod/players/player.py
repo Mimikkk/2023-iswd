@@ -11,7 +11,7 @@ class Player(object):
   # (a) it is the first turn (pile is empty) or (b) some cards were drawn in the previous turn)
   # output: - player's true decision, player's declaration (if not equal - (s)he cheats)
 
-  def putCard(self, declared_card):
+  def putCard(self, declared_card, *args, **kwargs):
     # DO NOT REMOVE TRUE CARD cards.remove!!!
     # return an object (not id): self.cards[id], not id
     # for instance: return self.cards[0], self.cards[0]
@@ -20,7 +20,7 @@ class Player(object):
     return self.cards[0], self.cards[0]
 
     # TO BE IMPLEMENTED - Decide whether to check or not opponent's move (return True or False)
-  def checkCard(self, opponent_declaration):
+  def checkCard(self, opponent_declaration, *args, **kwargs):
     pass
 
   # Notification sent at the end of a round
@@ -32,7 +32,7 @@ class Player(object):
   #                 FALSE -> otherwise
   # -- revealed - some card (X, Y). Only if I is_accusation.
   # -- taken_count - number of taken cards
-  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
+  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False, *args, **kwargs):
     if log: print(f"""
     Feedback = {self.name} 
     : checked this turn {checked} 
@@ -44,9 +44,9 @@ class Player(object):
 
 
   # Init player's hand
-  def startGame(self, cards):
+  def startGame(self, cards, *args, **kwargs):
     self.cards = cards
 
   # Add some cards to player's hand (if (s)he is_accusation opponent's move, but (s)he was wrong)
-  def takeCards(self, taken):
+  def takeCards(self, taken, *args, **kwargs):
     self.cards = self.cards + taken

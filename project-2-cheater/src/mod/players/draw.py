@@ -2,8 +2,8 @@ from numpy.random import choice
 from .player import Player
 
 class DrawPlayer(Player):
-  def putCard(self, declared):
+  def putCard(self, declared, *args, **kwargs):
     return "draw"
 
-  def checkCard(self, declared):
+  def checkCard(self, declared, *args, **kwargs):
     return choice([False, False])

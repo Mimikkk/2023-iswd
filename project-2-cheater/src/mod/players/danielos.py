@@ -3,7 +3,7 @@ from random import choice
 from .player import Player
 
 Card = tuple[int, int]
-class AlexosPlayer(Player):
+class DanielosPlayer(Player):
   Cards = tuple(
     (rank, color)
     for rank in range(9, 15)
@@ -12,18 +12,16 @@ class AlexosPlayer(Player):
 
   def __init__(self, name: str):
     super().__init__(name)
-    self.used: set[Card] = set()
+    self.suspicious = set()
 
   def on_start(self):
-    print("I started")
-    pass
+    self.suspicious.update(self.cards)
 
   def on_take(self, taken: list[Card]):
-    print(f"I took cards {taken}")
-    pass
+    self.suspicious.update(taken)
 
   def on_opponent_draw(self):
-    print("Opponent drew a few cards")
+    ...
 
   def on_feedback(
       self,
@@ -33,11 +31,9 @@ class AlexosPlayer(Player):
       revealed: Card | None,
       taken_count: int | None
   ):
-    print("I got feedback")
     if is_accusation: self.on_accusation(is_player, has_player_drawn_cards, revealed, taken_count)
 
   def on_accusation(self, is_player, has_player_drawn_cards, revealed, taken_count):
-    print("there was an accusation!")
     if is_player:
       if has_player_drawn_cards:
         self.on_wrong_accusation(revealed, taken_count)
@@ -50,34 +46,35 @@ class AlexosPlayer(Player):
         self.on_honest(taken_count)
 
   def on_wrong_accusation(self, revealed: Card, taken_count: int):
-    print(f"I was wrong so I took took {taken_count} cards. Also the top card was {revealed}.")
+    ...
 
   def on_right_accusation(self, revealed: Card, taken_count: int):
-    print(f"I was right so they took {taken_count} cards. Also the top card was {revealed}.")
+    ...
 
   def on_caught(self, taken_count: int):
-    print(f"I was caught so I took {taken_count} cards.")
+    ...
 
   def on_honest(self, taken_count: int):
-    print(f"I was honest and accused so they took {taken_count} cards.")
+    ...
 
   def declare(self, declared: Card | None):
     if not declared: self.on_opponent_draw()
-    print(f"Declared card {declared}")
 
-    valid_held_cards = [card for card in self.cards if not declared or card[0] > declared[0]]
+    valid_held_cards = declared and [card for card in self.cards if card[0] > declared[0]] or self.cards
     invalid_held_cards = [card for card in self.cards if card not in valid_held_cards]
 
-    valid_declarable_cards = [card for card in self.Cards if not declared or card[0] > declared[0]]
+    valid_declarable_cards = declared and [card for card in self.Cards if card[0] > declared[0]] or self.Cards
     not_held_declarable_cards = [card for card in valid_declarable_cards if card not in valid_held_cards]
 
     if not valid_held_cards: return "draw"
 
-    card = choice(valid_held_cards)
-    return card, card
+    card = declaration = choice(valid_held_cards)
+    return card, declaration
 
   def should_accuse(self, declared: Card):
-    print(f"I wonder whether {declared} is a dirty trick.")
+    print(self.cards)
+    print(self.suspicious)
+    if declared in self.suspicious: return True
     return False
 
   def putCard(self, declared_card, *args, **kwargs):

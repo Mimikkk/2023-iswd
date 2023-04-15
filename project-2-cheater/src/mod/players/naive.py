@@ -63,19 +63,19 @@ class NaivePlayer(Player):
   def should_accuse(self, declared: Card):
     return False
 
-  def putCard(self, declared_card):
+  def putCard(self, declared_card, *args, **kwargs):
     return self.declare(declared_card)
 
-  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False):
+  def getCheckFeedback(self, checked, iChecked, iDrewCards, revealedCard, noTakenCards, log=False, *args, **kwargs):
     self.on_feedback(checked, iChecked, iDrewCards, revealedCard, noTakenCards)
 
-  def checkCard(self, opponent_declaration):
+  def checkCard(self, opponent_declaration, *args, **kwargs):
     return self.should_accuse(opponent_declaration)
 
-  def startGame(self, cards):
+  def startGame(self, cards, *args, **kwargs):
     super().startGame(cards)
     self.on_start()
 
-  def takeCards(self, taken):
+  def takeCards(self, taken, *args, **kwargs):
     super().takeCards(taken)
     self.on_take(taken)

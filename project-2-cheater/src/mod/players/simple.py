@@ -2,7 +2,7 @@ from numpy.random import choice
 from .player import Player
 
 class SimplePlayer(Player):
-  def putCard(self, declared):
+  def putCard(self, declared, *args, **kwargs):
     should_draw = len(self.cards) == 1 and declared is not None and self.cards[0][0] < declared[0]
     if should_draw: return "draw"
 
@@ -13,6 +13,6 @@ class SimplePlayer(Player):
 
     return card, declaration
 
-  def checkCard(self, declared):
+  def checkCard(self, declared, *args, **kwargs):
     if declared in self.cards: return True
     return choice([True, False], p=[0.3, 0.7])
