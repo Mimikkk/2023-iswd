@@ -2,16 +2,7 @@ from random import choice
 
 from .extended_player import ExtendedPlayer
 
-Card = tuple[int, int]
-
-
 class DanielosPlayer(ExtendedPlayer):
-  Cards = tuple(
-    (rank, color)
-    for rank in range(9, 15)
-    for color in range(4)
-  )
-
   def __init__(self, name: str):
     super().__init__(name)
     self.suspected = []
