@@ -44,7 +44,13 @@ class LiarDanielosPlayer(ExtendedPlayer):
     valid = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
     declarable = declared and [card for card in self.cards if card[0] >= declared[0]] or self.Cards
 
-    if not valid: return "draw"
+    if not valid:
+      if len(self.cards) == 1 and random() < 0.20:
+        declarable_not_in_pile = set(declarable) - set(self.pile)
+        if len(declarable_not_in_pile) > 0:
+          return self.cards[0], choice(tuple(declarable_not_in_pile))
+
+      return "draw"
     if len(valid) == 1: return valid[0], valid[0]
 
     if declared and declarable and random() < 0.20:
