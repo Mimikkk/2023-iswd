@@ -51,7 +51,7 @@ class LiarDanielosPlayer(ExtendedPlayer):
           return self.cards[0], choice(tuple(declarable_not_in_pile))
 
       return "draw"
-    if len(valid) == 1: return valid[0], valid[0]
+    if len(self.cards) == 1: return valid[0], valid[0]
 
     if declared and declarable and random() < 0.20:
       card = choice(valid)

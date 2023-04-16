@@ -34,11 +34,12 @@ class DanielosPlayer(ExtendedPlayer):
 
   def declare(self, declared):
     if declared and declared not in self.pile: self.pile.append(declared)
-    valid_held_cards = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
+    valid = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
 
-    if not valid_held_cards: return "draw"
+    if not valid: return "draw"
+    if len(self.cards) == 1: return valid[0], valid[0]
 
-    card = declaration = choice(valid_held_cards)
+    card = declaration = choice(valid)
     self.pile.append(card)
     return card, declaration
 
