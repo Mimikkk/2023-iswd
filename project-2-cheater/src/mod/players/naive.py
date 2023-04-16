@@ -4,8 +4,6 @@ from .extended_player import ExtendedPlayer
 
 class NaivePlayer(ExtendedPlayer):
   def declare(self, declared):
-    if not declared: self.on_opponent_draw()
-
     valid = [card for card in self.cards if not declared or card[0] >= declared[0]]
     if not valid: return "draw"
 
