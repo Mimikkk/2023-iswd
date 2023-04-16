@@ -67,7 +67,7 @@ async def analyze(first: type[Player], second: type[Player], repeats: int, timeo
 
 async def main():
   import mod.players as players
-  repeats = 1
+  repeats = 10000
   timeout = 5
   metrics = ['wins']
   print(f"Repeats        : {repeats}")
