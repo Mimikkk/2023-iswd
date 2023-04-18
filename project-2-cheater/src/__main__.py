@@ -71,9 +71,9 @@ async def main():
   print(f"-" * 50)
 
   print(f"As first " + "-" * 50)
-  await analyze_all_vs_player(players.LiarDanielosPlayer, start_as='first', repeats=repeats, metrics=metrics)
+  await analyze_all_vs_player(players.LiarAlexosPlayer, start_as='first', repeats=repeats, metrics=metrics)
   print(f"As second" + "-" * 50)
-  await analyze_all_vs_player(players.LiarDanielosPlayer, start_as='second', repeats=repeats, metrics=metrics)
+  await analyze_all_vs_player(players.LiarAlexosPlayer, start_as='second', repeats=repeats, metrics=metrics)
 
 
 if __name__ == '__main__': asyncio.run(main())

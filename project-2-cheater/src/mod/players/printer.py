@@ -2,7 +2,7 @@ from random import choice
 
 from .extended_player import ExtendedPlayer
 
-class AlexosPlayer(ExtendedPlayer):
+class PrinterPlayer(ExtendedPlayer):
   def on_start(self):
     print("I started")
 
