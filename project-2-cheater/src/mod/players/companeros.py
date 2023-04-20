@@ -17,7 +17,7 @@ class CompanerosPlayer(Player):
       minimum = min(declared[0] + 1, 14)
       declaration = (minimum, card[1])
 
-      viable = [card for card in self.cards if card[0] in (minimum, minimum + 1)]
+      viable = [card for card in self.cards if card[0] in range(minimum, minimum + 3)]
       declaration = choice(viable or [declaration])
 
     return card, declaration
