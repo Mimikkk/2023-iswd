@@ -1,30 +1,21 @@
 from random import choice, random
 from .extended_player import ExtendedPlayer
 
+Card = tuple[int, int]
 
-def increase_naive(card):
-  # declare a card with value 1 higher
-  incr_val = (1, 0) if card[0] < 14 else (0, 0)
-  return card, tuple(map(sum, zip(card, incr_val)))
 
-def increase_with_color(card, declarable, incr_val):
-  higher_cards = [card for card in declarable if card[0] == card[0] + incr_val]
+def by_rank(card: Card): return card[0]
 
-  if not higher_cards:
-    return card, card
-  else:
-    return card, choice(higher_cards)
 
-def play_valid_as_declarable(valid, declarable):
+def by_color(card: Card): return card[1]
 
-  declarable.sort(key=lambda x: x[0])
-  valid.sort(key=lambda x: x[0])
 
-  card = valid[0]
-  if valid[0][0] < declarable[0][0]:
-    return card, declarable[0]
-  else:
-    return card, card
+def increase_by(card: Card, declarable: list[Card], value: int):
+  if value == 0: return card, card
+  declarable = [(rank, color) for (rank, color) in declarable if rank == rank + value]
+  if not declarable: return increase_by(card, declarable, value - 1)
+  return card, choice(declarable)
+
 
 class LiarAlexosPlayer(ExtendedPlayer):
   Cards = tuple(
@@ -61,28 +52,29 @@ class LiarAlexosPlayer(ExtendedPlayer):
   def on_take(self, taken):
     self.suspected.extend(taken)
 
+  def on_opponent_draw(self):
+    for _ in range(3):
+      if len(self.pile) > 0 and (card := self.pile.pop()) in self.suspected: self.suspected.remove(card)
+
   def declare(self, declared):
-    # valid = those i can place without lying
-    valid = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
-    declarable = declared and [card for card in self.Cards if card[0] >= declared[0]] or self.Cards
-    valid = list(valid) if type(valid) != list else valid
-    declarable = list(declarable) if type(declarable) != list else declarable
+    valid: list[Card] = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
+    declarable: list[Card] = declared and [card for card in self.Cards if card[0] >= declared[0]] or self.Cards
+
+    if len(valid) == 0 and len(self.cards) == 1 and random() < 0.20:
+      card = declaration = self.cards[0]
+      self.pile.append(card)
+      return card, declaration
 
     if not valid: return "draw"
+    min_valid, max_valid = min(valid, key=by_rank), max(valid, key=by_rank)
+    difference = max_valid[0] - min_valid[0]
 
-    card_min_valid, card_max_valid = min(valid, key=lambda x: x[0]), max(valid, key=lambda x: x[0])
+    card, declaration = len(self.cards) <= 3 \
+                        and (max_valid, max_valid) \
+                        or increase_by(min_valid, declarable, difference)
 
-    ### the incr_val could be dynamic based on the number of cards left in hand or in the pile
-    # return increase_with_color(card_min, declarable_not_in_pile, incr_val=2)
-    # return card_min_valid, card_min_valid
+    self.pile.append(card)
+    return card, declaration
 
-    ### other option: play it safe in endgame, but this won't work well when
-    ### we draw on not declarable instead on 'not valid' (maybe this can be patched somehow)
-    if len(self.cards) <= 3:
-      return card_max_valid, card_max_valid
-    else:
-      return increase_with_color(card_min_valid, declarable, 2)
-      # return play_valid_as_declarable(valid, declarable)
   def should_accuse(self, declared):
-    if declared in self.cards:
-      return True
+    return declared in self.suspected

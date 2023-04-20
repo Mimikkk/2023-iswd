@@ -64,7 +64,7 @@ async def analyze(first: type[Player], second: type[Player], repeats: int, metri
 
 async def main():
   import mod.players as players
-  repeats = 1000
+  repeats = 10000
   metrics = ['wins']
   print(f"Repeats        : {repeats}")
   print(f"Metrics        : {', '.join(metrics)}")
