@@ -9,8 +9,8 @@ class LiarPlayer(ExtendedPlayer):
   )
 
   def declare(self, declared):
-    valid = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
-    declarable = declared and [card for card in self.cards if card[0] >= declared[0]] or self.Cards
+    valid = [card for card in self.cards if not declared or card[0] >= declared[0]]
+    declarable = [card for card in self.Cards if not declared or card[0] >= declared[0]]
 
     if not valid: return "draw"
 

@@ -41,8 +41,8 @@ class LiarDanielosPlayer(ExtendedPlayer):
 
   def declare(self, declared):
     if declared and declared not in self.pile: self.pile.append(declared)
-    valid = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
-    declarable = declared and [card for card in self.cards if card[0] >= declared[0]] or self.Cards
+    valid = [card for card in self.cards if not declared or card[0] >= declared[0]]
+    declarable = [card for card in set(self.Cards) - set(self.pile) if not declared or card[0] >= declared[0]]
 
     if not valid:
       if len(self.cards) == 1 and random() < 0.20:

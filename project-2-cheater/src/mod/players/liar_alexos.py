@@ -57,11 +57,12 @@ class LiarAlexosPlayer(ExtendedPlayer):
       if len(self.pile) > 0 and (card := self.pile.pop()) in self.suspected: self.suspected.remove(card)
 
   def declare(self, declared):
-    valid: list[Card] = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
-    declarable: list[Card] = declared and [card for card in self.Cards if card[0] >= declared[0]] or self.Cards
+    valid = [card for card in self.cards if not declared or card[0] >= declared[0]]
+    declarable = [card for card in self.Cards if not declared or card[0] >= declared[0]]
 
-    if len(valid) == 0 and len(self.cards) == 1 and random() < 0.20:
-      card = declaration = self.cards[0]
+    if len(valid) == 1 and len(self.cards) == 1 and random() < 0.20:
+      card = declaration = valid[0]
+      if card not in self.suspected: self.suspected.append(card)
       self.pile.append(card)
       return card, declaration
 
@@ -73,8 +74,9 @@ class LiarAlexosPlayer(ExtendedPlayer):
                         and (max_valid, max_valid) \
                         or increase_by(min_valid, declarable, difference)
 
+    if card not in self.suspected: self.suspected.append(card)
     self.pile.append(card)
     return card, declaration
 
   def should_accuse(self, declared):
-    return declared in self.suspected
+    return False

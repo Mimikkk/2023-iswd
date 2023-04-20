@@ -64,16 +64,13 @@ async def analyze(first: type[Player], second: type[Player], repeats: int, metri
 
 async def main():
   import mod.players as players
-  repeats = 10000
+  repeats = 1
   metrics = ['wins']
   print(f"Repeats        : {repeats}")
   print(f"Metrics        : {', '.join(metrics)}")
   print(f"-" * 50)
 
   print(f"As first " + "-" * 50)
-  await analyze_all_vs_player(players.CompanerosPlayer, start_as='first', repeats=repeats, metrics=metrics)
-  print(f"As second" + "-" * 50)
-  await analyze_all_vs_player(players.CompanerosPlayer, start_as='second', repeats=repeats, metrics=metrics)
-
+  await analyze(players.LiarAlexosPlayer, players.NaivePlayer, repeats=repeats, metrics=metrics)
 
 if __name__ == '__main__': asyncio.run(main())
