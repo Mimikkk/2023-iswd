@@ -57,6 +57,7 @@ class LiarAlexosPlayer(ExtendedPlayer):
       if len(self.pile) > 0 and (card := self.pile.pop()) in self.suspected: self.suspected.remove(card)
 
   def declare(self, declared):
+
     valid: list[Card] = declared and [card for card in self.cards if card[0] >= declared[0]] or self.cards
     declarable: list[Card] = declared and [card for card in self.Cards if card[0] >= declared[0]] or self.Cards
 
