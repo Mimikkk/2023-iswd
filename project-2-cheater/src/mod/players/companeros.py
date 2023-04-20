@@ -6,8 +6,15 @@ Card = tuple[int, int]
 
 
 class CompanerosPlayer(Player):
+  Cards = tuple(
+    (rank, color)
+    for rank in range(9, 15)
+    for color in range(4)
+  )
+
   def declare(self, declared):
     valid = [card for card in self.cards if self.is_valid(card, declared)]
+    declarable = [card for card in self.Cards if self.is_valid(card, declared)]
     if len(self.cards) == 1 and len(valid) == 1: return valid[0], valid[0]
     if not valid: return "draw"
 
@@ -15,10 +22,9 @@ class CompanerosPlayer(Player):
 
     if declared and not self.is_valid(card, declared):
       minimum = min(declared[0] + 1, 14)
-      declaration = (minimum, card[1])
 
       viable = [card for card in self.cards if card[0] in range(minimum, minimum + 3)]
-      declaration = choice(viable or [declaration])
+      declaration = choice(viable or valid)
 
     return card, declaration
 
