@@ -5,3 +5,4 @@ from .liar import LiarPlayer
 from .danielos import DanielosPlayer
 from .naive import NaivePlayer
 from .simpleton import SimpletonPlayer
+from .companeros import CompanerosPlayer

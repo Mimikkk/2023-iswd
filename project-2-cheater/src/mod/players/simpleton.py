@@ -1,7 +1,7 @@
-from .extended_player import ExtendedPlayer
+from .player import Player
 
 
-class SimpletonPlayer(ExtendedPlayer):
+class SimpletonPlayer(Player):
   def declare(self, declared):
     valid = [card for card in self.cards if self.is_valid(card, declared)]
     if not valid: return "draw"
@@ -22,3 +22,21 @@ class SimpletonPlayer(ExtendedPlayer):
     for card in self.cards:
       if card[0] in (declaration[0], declaration[0] + 1): return card
     return declaration
+
+  def __init__(self, name: str):
+    super().__init__(name)
+
+  def putCard(self, declared_card):
+    return self.declare(declared_card)
+
+  def checkCard(self, opponent_declaration):
+    return self.should_accuse(opponent_declaration)
+
+  def is_valid(self, first, other):
+    return not other or first[0] >= other[0]
+
+  def by_rank(self, card):
+    return card[0]
+
+  def by_color(self, card):
+    return card[1]
