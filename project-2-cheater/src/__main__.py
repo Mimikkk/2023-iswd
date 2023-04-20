@@ -49,6 +49,7 @@ async def analyze_all_vs_player(
   players = [player for (_, player) in sorted(getmembers(players, isclass), key=lambda x: x[0])]
 
   for player in players:
+    if player.__name__ == used.__name__: continue
     print(player.__name__)
     first = used if start_as == 'first' else player
     second = used if start_as == 'second' else player
@@ -64,7 +65,7 @@ async def analyze(first: type[Player], second: type[Player], repeats: int, metri
 
 async def main():
   import mod.players as players
-  repeats = 1000
+  repeats = 100
   metrics = ['wins']
   print(f"Repeats        : {repeats}")
   print(f"Metrics        : {', '.join(metrics)}")
@@ -72,6 +73,6 @@ async def main():
 
   print(f"As first " + "-" * 50)
   # await analyze(players.DanielosPlayer, players.SimplePlayer, repeats=repeats, metrics=metrics)
-  await analyze_all_vs_player(players.SimpletonPlayer, repeats=repeats, metrics=metrics)
+  await analyze_all_vs_player(players.DanielosPlayer, repeats=repeats, metrics=metrics)
 
 if __name__ == '__main__': asyncio.run(main())
