@@ -12,13 +12,13 @@ class SimpletonPlayer(ExtendedPlayer):
       minimum = declared[0]
       if card[0] < minimum:
         declaration = (min(minimum + 1, 14), declaration[1])
-        declaration = self.pick_your_card(declaration)
+        declaration = self.pick(declaration)
     return card, declaration
 
   def should_accuse(self, declared):
     return declared in self.cards
 
-  def pick_your_card(self, declaration):
+  def pick(self, declaration):
     for card in self.cards:
       if card[0] in (declaration[0], declaration[0] + 1): return card
     return declaration
