@@ -7,11 +7,9 @@ class DanielosPlayer(ExtendedPlayer):
   def __init__(self, name: str):
     super().__init__(name)
     self.suspected = []
-    self.declared = None
     self.pile = []
 
   def on_right_accusation(self, revealed, taken_count):
-    if revealed in self.suspected: self.suspected.remove(revealed)
     self.on_draw()
 
   def on_wrong_accusation(self, revealed, taken_count):
@@ -31,7 +29,7 @@ class DanielosPlayer(ExtendedPlayer):
     self.suspected.extend(self.cards)
 
   def on_take(self, taken):
-    self.suspected.extend(taken)
+    for card in taken: self.suspected.append(card)
 
   def declare(self, declared):
     if declared and declared not in self.pile:
@@ -47,12 +45,10 @@ class DanielosPlayer(ExtendedPlayer):
     return card, declaration
 
   def should_accuse(self, declared):
-    if declared:
-      self.pile.append(declared)
-    if declared not in self.pile:
-      self.suspected.append(declared)
-
-    return declared in self.suspected
+    if declared in self.suspected: return True
+    self.pile.append(declared)
+    self.suspected.append(declared)
+    return False
 
   def on_draw(self):
     for _ in range(3):

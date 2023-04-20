@@ -3,5 +3,5 @@ from .simple import SimplePlayer
 from .draw import DrawPlayer
 from .liar import LiarPlayer
 from .danielos import DanielosPlayer
-from .liar_alexos import LiarAlexosPlayer
 from .naive import NaivePlayer
+from .simpleton import SimpletonPlayer
