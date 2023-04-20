@@ -14,7 +14,7 @@ class CompanerosPlayer(Player):
 
   def declare(self, declared):
     valid = [card for card in self.cards if self.is_valid(card, declared)]
-    declarable = [card for card in self.Cards if self.is_valid(card, declared)]
+
     if len(self.cards) == 1 and len(valid) == 1: return valid[0], valid[0]
     if not valid: return "draw"
 
