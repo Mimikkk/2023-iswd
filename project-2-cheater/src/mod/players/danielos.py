@@ -51,30 +51,25 @@ class DanielosPlayer(ExtendedPlayer):
     for card in taken: self.suspected.add(card)
 
   def declare(self, declared):
-    if declared:
-      self.pile.append(declared)
-      self.suspected.add(declared)
-
-    self.present_state(declared)
-
     valid = [card for card in self.cards if self.is_valid(card, declared)]
-
-    if len(valid) == 1 and len(self.cards) == 1: return valid[0], valid[0]
     if not valid: return "draw"
 
     card = declaration = min(self.cards, key=self.by_rank)
 
     if declared:
-      if declared[0] > card[0]:
-        minimum = min(declared[0] + 1, 14)
-        viable = [card for card in self.cards if card[0] in (minimum, minimum + 1)] or [card]
-        declaration = choice(viable)
-
-
+      minimum = declared[0]
+      if card[0] < minimum:
+        declaration = (min(minimum + 1, 14), declaration[1])
+        declaration = self.pick(declaration)
     return card, declaration
 
   def should_accuse(self, declared):
     return declared in self.cards
+
+  def pick(self, declaration):
+    for card in self.cards:
+      if card[0] in (declaration[0], declaration[0] + 1): return card
+    return declaration
 
   def present_state(self, declared):
     print(declared)
