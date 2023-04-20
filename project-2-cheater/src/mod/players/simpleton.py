@@ -4,12 +4,11 @@ from .extended_player import ExtendedPlayer
 class SimpletonPlayer(ExtendedPlayer):
   def declare(self, declared):
 
-    if len(self.cards) == 1 and self.is_valid(self.cards[0], declared):
+    if len(self.cards) == 1 and not self.is_valid(self.cards[0], declared):
       return "draw"
 
-    card = min(self.cards, key=lambda x: x[0])
-    declaration = (card[0], card[1])
-    if declared is not None:
+    card = declaration = min(self.cards, key=self.by_rank)
+    if declared:
       min_val = declared[0]
       if card[0] < min_val:
         declaration = (min(min_val + 1, 14), declaration[1])
