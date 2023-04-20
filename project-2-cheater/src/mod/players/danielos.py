@@ -1,14 +1,20 @@
-from random import choice, random
+from copy import copy
+from random import choice, random, shuffle
+
+import numpy as np
 
 from .extended_player import ExtendedPlayer
 
 Card = tuple[int, int]
+
+
 def increase_by(card: Card, declarable: list[Card], value: int):
   if value == 0: return card, card
 
   declarable = [c for c in declarable if c[0] == card[0] + value]
   if not declarable: return increase_by(card, declarable, value - 1)
   return card, choice(declarable)
+
 
 class DanielosPlayer(ExtendedPlayer):
   Cards = tuple(
@@ -46,9 +52,6 @@ class DanielosPlayer(ExtendedPlayer):
 
   def declare(self, declared):
     valid = [card for card in self.cards if self.is_valid(card, declared)]
-    declarable = [card for card in self.Cards if self.is_valid(card, declared)]
-
-    if len(valid) == 1: return valid[0], valid[0]
     if not valid: return "draw"
 
     card = declaration = min(self.cards, key=self.by_rank)
@@ -64,8 +67,7 @@ class DanielosPlayer(ExtendedPlayer):
     return declared in self.cards
 
   def on_draw(self):
-    for _ in range(3):
-      if self.pile and (card := self.pile.pop()) in self.suspected: self.suspected.remove(card)
+    ...
 
   def present_state(self, declared):
     print(declared)
