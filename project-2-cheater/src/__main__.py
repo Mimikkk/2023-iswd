@@ -15,9 +15,9 @@ def analyze_matches(FirstPlayer: type[Player], SecondPlayer: type[Player], repea
     game = Game([FirstPlayer(name="first"), SecondPlayer(name="second")])
 
     while True:
-      _, player = game.take_turn()
+      _, player = game.takeTurn()
 
-      if game.is_finished():
+      if game.isFinished():
         stats["wins"][player] += 1
         break
 
@@ -71,9 +71,9 @@ async def main():
   print(f"-" * 50)
 
   print(f"As first " + "-" * 50)
-  await analyze_all_vs_player(players.LiarAlexosPlayer, start_as='first', repeats=repeats, metrics=metrics)
+  await analyze_all_vs_player(players.CompanerosPlayer, start_as='first', repeats=repeats, metrics=metrics)
   print(f"As second" + "-" * 50)
-  await analyze_all_vs_player(players.LiarAlexosPlayer, start_as='second', repeats=repeats, metrics=metrics)
+  await analyze_all_vs_player(players.CompanerosPlayer, start_as='second', repeats=repeats, metrics=metrics)
 
 
 if __name__ == '__main__': asyncio.run(main())
