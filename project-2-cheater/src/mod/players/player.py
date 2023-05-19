@@ -25,7 +25,7 @@ class Player():
     pass
 
   ### Notification sent at the end of a round
-  ### One may implement this method, capture data, and use it to get extra info
+  ### One may implement this method, capture resources, and use it to get extra info
   ### -- checked = TRUE -> someone checked. If FALSE, the remaining inputs do not play any role
   ### -- iChecked = TRUE -> I decided to check my opponent (so it was my turn);
   ###               FALSE -> my opponent checked and it was his turn
