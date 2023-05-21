@@ -12,7 +12,6 @@ SplitType: TypeAlias = Literal['labeled', 'unlabeled']
 class LoanDataset(object):
   labeled: DataFrame
   unlabeled: DataFrame
-  _encoder: ClassVar[OneHotEncoder] = OneHotEncoder(handle_unknown='ignore')
 
   @classmethod
   def load(cls):
@@ -21,23 +20,19 @@ class LoanDataset(object):
       pd.read_csv(f"./resources/datasets/loan_sanction_unlabeled.csv")
     )
 
-  def preprocess(self, *, type: SplitType = 'labeled') -> tuple[NDArray, NDArray | None]:
-    if type == 'labeled':
-      df = self.labeled.copy()
-      df.dropna(inplace=True)
-      df.drop(columns=["Loan_ID"], inplace=True)
-
-      X = df.drop(columns=["Loan_Status"])
-      y = df["Loan_Status"]
-
-      X = self._encoder.fit_transform(X).toarray()
-      y = y.map({"N": 0, "Y": 1}).to_numpy()
-
-      return X, y
-    df = self.unlabeled.copy()
+  def preprocess(self, *, variant: SplitType = 'labeled') -> tuple[NDArray, NDArray | None]:
+    df = self.labeled.copy() if variant == 'labeled' else self.unlabeled.copy()
     df.dropna(inplace=True)
-
     df.drop(columns=["Loan_ID"], inplace=True)
-    X = self._encoder.fit_transform(df).toarray()
+    df["Gender"] = df["Gender"].map({"Male": 1, "Female": 0})
+    df["Married"] = df["Married"].map({"Yes": 1, "No": 0})
+    df["Dependents"] = df["Dependents"].map({"0": 0, "1": 1, "2": 2, "3+": 3})
+    df["Education"] = df["Education"].map({"Graduate": 1, "Not Graduate": 0})
+    df["Self_Employed"] = df["Self_Employed"].map({"Yes": 1, "No": 0})
+    df["Property_Area"] = df["Property_Area"].map({"Urban": 2, "Semiurban": 1, "Rural": 0})
 
-    return X
+    if variant == 'labeled':
+      df["Loan_Status"] = df["Loan_Status"].map({"N": 0, "Y": 1})
+      return df.drop(columns=["Loan_Status"]).to_numpy(), df["Loan_Status"].to_numpy()
+
+    return df.to_numpy(), None
