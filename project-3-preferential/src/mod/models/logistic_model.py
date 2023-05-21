@@ -11,7 +11,6 @@ from ..dataset import LoanDataset
 class LogisticModel(object):
   regressor: LogisticRegression
   validator: GridSearchCV
-  _path: ClassVar[str] = './resources/models/logistic_model.pkl'
   _encoder: ClassVar[OneHotEncoder] = OneHotEncoder()
 
   @classmethod

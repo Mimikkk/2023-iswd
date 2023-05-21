@@ -24,14 +24,11 @@ def calculate_regret(x, target):
     torch.relu(-(target >= 1).float() * x) + torch.relu((target < 1).float() * x)
   )
 
-
 def calculate_accuracy(x, target):
   return (target == (x[:, 0] > 0) * 1).detach().numpy().mean()
 
-
 def calculate_auc(x, target):
   return roc_auc_score(target.detach().numpy(), x.detach().numpy()[:, 0])
-
 
 def create_data_loader(X: NDArray, y: NDArray, *, batchsize=None) -> DataLoader:
   dataset = NumpyDataset(X, y)

@@ -1,5 +1,8 @@
 import pickle
 from typing import ClassVar
+
+import torch
+
 from .logistic_model import LogisticModel
 from .ann_model import AnnModel
 from .dnn_model import DnnModel
@@ -8,9 +11,9 @@ from os import makedirs
 from ..dataset import LoanDataset
 
 class ModelManager(object):
-  _logistic_path: ClassVar[str] = './resources/models/logistic_model.pkl'
-  _ann_path: ClassVar[str] = './resources/models/ann_model.pkl'
-  _cnn_path: ClassVar[str] = './resources/models/cnn_model.pkl'
+  _logistic_path: ClassVar[str] = './resources/models/logistic.model'
+  _ann_path: ClassVar[str] = './resources/models/ann.model'
+  _dnn_path: ClassVar[str] = './resources/models/dnn.model'
 
   @classmethod
   def use_logistic(cls, dataset: LoanDataset, *, invalidate: bool = False):
@@ -29,31 +32,21 @@ class ModelManager(object):
     pickle.dump(model, open(cls._logistic_path, 'wb'))
 
   @classmethod
-  def use_ann(cls, dataset: LoanDataset, *, invalidate: bool = False) -> AnnModel:
-    # if not invalidate and exists(cls._logistic_path): return cls.load_ann()
-    model = AnnModel.create(dataset)
-    # cls.save_ann(model)
-    return model
+  def use_ann(cls, dataset: LoanDataset, *, invalidate: bool = False):
+    if not invalidate and exists(cls._ann_path): return cls.load_ann()
+    AnnModel.create(dataset, cls._ann_path)
+    return cls.load_ann()
 
   @classmethod
   def load_ann(cls) -> AnnModel:
-    raise NotImplementedError
-
-  @classmethod
-  def save_ann(cls, model: AnnModel):
-    raise NotImplementedError
+    return torch.load(cls._ann_path)
 
   @classmethod
   def use_dnn(cls, dataset: LoanDataset, *, invalidate: bool = False):
-    # if not invalidate and exists(cls._logistic_path): return cls.load_cnn()
-    model = DnnModel.create(dataset)
-    # cls.save_cnn(model)
-    return model
+    if not invalidate and exists(cls._dnn_path): return cls.load_dnn()
+    DnnModel.create(dataset, cls._dnn_path)
+    return cls.load_dnn()
 
   @classmethod
   def load_dnn(cls) -> DnnModel:
-    raise NotImplementedError
-
-  @classmethod
-  def save_dnn(cls, model: DnnModel):
-    raise NotImplementedError
+    return torch.load(cls._dnn_path)

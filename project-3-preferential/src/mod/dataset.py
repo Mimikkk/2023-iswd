@@ -23,6 +23,7 @@ class LoanDataset(object):
   def preprocess(self, *, variant: SplitType = 'labeled') -> tuple[NDArray, NDArray | None, DataFrame]:
     df = self.labeled.copy() if variant == 'labeled' else self.unlabeled.copy()
     df.dropna(inplace=True)
+
     df.drop(columns=["Loan_ID"], inplace=True)
     df["Gender"] = df["Gender"].map({"Male": 1, "Female": 0})
     df["Married"] = df["Married"].map({"Yes": 1, "No": 0})
