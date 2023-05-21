@@ -114,27 +114,30 @@ class AnnModel(object):
       "Property_Area",
     ], axis=1, inplace=True)
     df.dropna(inplace=True)
-    target_map = {"N": 0, "Y": 1}
 
     criteria_nr = 4
-    data_input = df.iloc[:, :criteria_nr].apply(
-      lambda x: mobious_transform(x), axis=1, result_type="expand"
-    )
-    data_target = df["Loan_Status"].map(target_map)
+    X = df.iloc[:, :criteria_nr].apply(mobious_transform, axis=1, result_type="expand")
+    y = df["Loan_Status"].map({"N": 0, "Y": 1})
 
     X_train, X_test, y_train, y_test = train_test_split(
-      data_input.values, data_target.values, test_size=0.1, random_state=10
+      X.values, y.values, test_size=0.1, random_state=10
     )
-    train_dataloader = create_data_loader(X_train, y_train, batchsize=32)
-    test_dataloader = create_data_loader(X_test, y_test, batchsize=32)
-    PATH = "choquet.pt"
-    model = ChoquetConstrained(criteria_nr)
-    acc, acc_test, auc, auc_test = train_model(model, train_dataloader, test_dataloader, PATH, lr=0.001, epoch_nr=500)
 
-    print("Accuracy train:\t%.2f%%" % (acc * 100.0))
-    print("AUC train: \t%.2f%%" % (acc_test * 100.0))
+    model = ChoquetConstrained(criteria_nr)
+    model_path = "choquet.pt"
+    best_acc, acc_test, best_auc, auc_test = train_model(
+      model,
+      create_data_loader(X_train, y_train, batchsize=32),
+      create_data_loader(X_test, y_test, batchsize=32),
+      model_path,
+      lr=0.001,
+      epoch_nr=500
+    )
+
+    print(f"Accuracy train:\t{best_acc * 100:.2f}%")
+    print(f"AUC train: \t{best_auc * 100:.2f}%")
     print()
-    print("Accuracy test:\t%.2f%%" % (auc * 100.0))
-    print("AUC test: \t%.2f%%" % (auc_test * 100.0))
+    print(f"Accuracy test:\t{acc_test * 100:.2f}%")
+    print(f"AUC test: \t{auc_test * 100:.2f}%")
 
     return cls(model)

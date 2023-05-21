@@ -2,7 +2,7 @@ import pickle
 from typing import ClassVar
 from .logistic_model import LogisticModel
 from .ann_model import AnnModel
-from .cnn_model import CnnModel
+from .dnn_model import DnnModel
 from os.path import exists
 from os import makedirs
 from ..dataset import LoanDataset
@@ -44,16 +44,16 @@ class ModelManager(object):
     raise NotImplementedError
 
   @classmethod
-  def use_cnn(cls, dataset: LoanDataset, *, invalidate: bool = False):
+  def use_dnn(cls, dataset: LoanDataset, *, invalidate: bool = False):
     # if not invalidate and exists(cls._logistic_path): return cls.load_cnn()
-    model = CnnModel.create(dataset)
+    model = DnnModel.create(dataset)
     # cls.save_cnn(model)
     return model
 
   @classmethod
-  def load_cnn(cls) -> CnnModel:
+  def load_dnn(cls) -> DnnModel:
     raise NotImplementedError
 
   @classmethod
-  def save_cnn(cls, model: CnnModel):
+  def save_dnn(cls, model: DnnModel):
     raise NotImplementedError
