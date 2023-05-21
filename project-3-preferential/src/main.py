@@ -1,15 +1,14 @@
 from sklearn.model_selection import train_test_split
-import torch
-from torch.utils.data import Dataset
-from tqdm import tqdm
-
 from mod.dataset import LoanDataset
 from mod.models import ModelManager
 from mod.helpers import *
 
 def main():
   ds = LoanDataset.load()
-  cnn = ModelManager.use_cnn(ds, invalidate=True)
+  ann = ModelManager.use_ann(ds, invalidate=True)
+
+  exit(1)
+  cnn = ModelManager.use_ann(ds, invalidate=True)
   (X, y) = ds.preprocess(type='labeled')
 
   (X_train, X_test, y_train, y_test) = train_test_split(X, y, test_size=0.1, random_state=10)

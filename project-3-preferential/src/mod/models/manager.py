@@ -30,9 +30,9 @@ class ModelManager(object):
 
   @classmethod
   def use_ann(cls, dataset: LoanDataset, *, invalidate: bool = False) -> AnnModel:
-    if not invalidate and exists(cls._logistic_path): return cls.load_ann()
+    # if not invalidate and exists(cls._logistic_path): return cls.load_ann()
     model = AnnModel.create(dataset)
-    cls.save_ann(model)
+    # cls.save_ann(model)
     return model
 
   @classmethod
