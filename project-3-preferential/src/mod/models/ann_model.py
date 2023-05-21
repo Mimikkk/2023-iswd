@@ -1,0 +1,2 @@
+class AnnModel(object):
+  pass

@@ -1,0 +1,2 @@
+class CnnModel(object):
+  pass
