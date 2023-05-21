@@ -117,13 +117,11 @@ class AnnModel(object):
     target_map = {"N": 0, "Y": 1}
 
     criteria_nr = 4
-    data_input = df.iloc[:, :criteria_nr].apply(
-      lambda x: mobious_transform(x), axis=1, result_type="expand"
-    )
-    data_target = df["Loan_Status"].map(target_map)
+    X = df.iloc[:, :criteria_nr].apply(mobious_transform, axis=1, result_type="expand")
+    y = df["Loan_Status"].map(target_map)
 
     X_train, X_test, y_train, y_test = train_test_split(
-      data_input.values, data_target.values, test_size=0.1, random_state=10
+      X.values, y.values, test_size=0.1, random_state=10
     )
     train_dataloader = create_data_loader(X_train, y_train, batchsize=32)
     test_dataloader = create_data_loader(X_test, y_test, batchsize=32)
