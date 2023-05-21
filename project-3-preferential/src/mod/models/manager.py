@@ -17,6 +17,7 @@ class ModelManager(object):
     if not invalidate and exists(cls._logistic_path): return cls.load_logistic()
     model = LogisticModel.create(dataset)
     cls.save_logistic(model)
+    return model
 
   @classmethod
   def load_logistic(cls) -> LogisticModel:
@@ -32,6 +33,7 @@ class ModelManager(object):
     if not invalidate and exists(cls._logistic_path): return cls.load_ann()
     model = AnnModel.create(dataset)
     cls.save_ann(model)
+    return model
 
   @classmethod
   def load_ann(cls) -> AnnModel:
@@ -43,9 +45,10 @@ class ModelManager(object):
 
   @classmethod
   def use_cnn(cls, dataset: LoanDataset, *, invalidate: bool = False):
-    if not invalidate and exists(cls._logistic_path): return cls.load_cnn()
+    # if not invalidate and exists(cls._logistic_path): return cls.load_cnn()
     model = CnnModel.create(dataset)
-    cls.save_cnn(model)
+    # cls.save_cnn(model)
+    return model
 
   @classmethod
   def load_cnn(cls) -> CnnModel:

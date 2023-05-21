@@ -28,14 +28,14 @@ class LoanDataset(object):
       X = df.drop(columns=["Loan_Status"])
       y = df["Loan_Status"]
 
-      X = self._encoder.fit_transform(X)
-      y = y.map({"N": 0, "Y": 1})
+      X = self._encoder.fit_transform(X).toarray()
+      y = y.map({"N": 0, "Y": 1}).to_numpy()
 
       return X, y
     df = self.test.copy()
     df.dropna(inplace=True)
 
     df.drop(columns=["Loan_ID"], inplace=True)
-    X = self._encoder.transform(df)
+    X = self._encoder.fit_transform(df).toarray()
 
     return X
