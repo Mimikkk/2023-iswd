@@ -5,7 +5,9 @@ from mod.helpers import *
 
 def main():
   ds = LoanDataset.load()
-  ann = ModelManager.use_ann(ds, invalidate=True)
+  log = ModelManager.use_logistic(ds, invalidate=True)
+
+  # ann = ModelManager.use_ann(ds, invalidate=True)
   # dnn = ModelManager.use_dnn(ds, invalidate=True)
 
 if __name__ == '__main__':
