@@ -1,6 +1,5 @@
 from numpy.typing import NDArray
-from typing import ClassVar, TypeAlias, Literal
-from sklearn.preprocessing import OneHotEncoder
+from typing import TypeAlias, Literal
 from dataclasses import dataclass
 import pandas as pd
 

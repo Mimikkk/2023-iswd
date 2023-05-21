@@ -12,7 +12,24 @@ class DnnModel(object):
 
   @classmethod
   def create(cls, dataset: LoanDataset, model_path: str) -> 'DnnModel':
-    model = Sequential(
+    model = cls.empty(dataset).model
+
+    (X, y, _) = dataset.preprocess(variant="labeled")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
+    train_model(
+      model,
+      create_data_loader(X_train, y_train, batchsize=32),
+      create_data_loader(X_test, y_test, batchsize=32),
+      model_path,
+      lr=0.001,
+      epoch_nr=500
+    )
+
+    return cls(model)
+
+  @classmethod
+  def empty(cls, dataset: LoanDataset):
+    return cls(Sequential(
       nn.Linear(len(dataset.unlabeled.columns) - 1, 1024),
       nn.ReLU(),
       nn.Linear(1024, 512),
@@ -33,23 +50,4 @@ class DnnModel(object):
       nn.ReLU(),
       nn.Linear(32, 1),
       nn.Sigmoid()
-    )
-
-    (X, y, _) = dataset.preprocess(variant="labeled")
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=10)
-    best_acc, acc_test, best_auc, auc_test = train_model(
-      model,
-      create_data_loader(X_train, y_train, batchsize=32),
-      create_data_loader(X_test, y_test, batchsize=32),
-      model_path,
-      lr=0.001,
-      epoch_nr=500
-    )
-
-    print(f"Accuracy train:\t{best_acc * 100:.2f}%")
-    print(f"AUC train: \t{best_auc * 100:.2f}%")
-    print()
-    print(f"Accuracy test:\t{acc_test * 100:.2f}%")
-    print(f"AUC test: \t{auc_test * 100:.2f}%")
-
-    return cls(model)
+    ))

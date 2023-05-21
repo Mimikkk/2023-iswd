@@ -30,15 +30,14 @@ class AnnModel(object):
       "Property_Area",
     ], axis=1, inplace=True)
 
-    criteria_nr = 4
-    X = df.iloc[:, :criteria_nr].apply(transform_mobius, axis=1, result_type="expand")
+    X = df.iloc[:, :4].apply(transform_mobius, axis=1, result_type="expand")
     y = df["Loan_Status"]
 
     X_train, X_test, y_train, y_test = train_test_split(
       X.values, y.values, test_size=0.1, random_state=10
     )
 
-    model = ChoquetConstrained(criteria_nr)
+    model = cls.empty().model
     best_acc, acc_test, best_auc, auc_test = train_model(
       model,
       create_data_loader(X_train, y_train, batchsize=32),
@@ -55,3 +54,7 @@ class AnnModel(object):
     print(f"AUC test: \t{auc_test * 100:.2f}%")
 
     return cls(model)
+
+  @classmethod
+  def empty(cls):
+    return cls(ChoquetConstrained(4))

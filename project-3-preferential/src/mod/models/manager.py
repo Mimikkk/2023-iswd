@@ -39,14 +39,20 @@ class ModelManager(object):
 
   @classmethod
   def load_ann(cls) -> AnnModel:
-    return torch.load(cls._ann_path)
+    memory = torch.load(cls._ann_path)
+    model = AnnModel.empty()
+    model.model.load_state_dict(memory['model']['state'])
+    return model
 
   @classmethod
   def use_dnn(cls, dataset: LoanDataset, *, invalidate: bool = False):
-    if not invalidate and exists(cls._dnn_path): return cls.load_dnn()
+    if not invalidate and exists(cls._dnn_path): return cls.load_dnn(dataset)
     DnnModel.create(dataset, cls._dnn_path)
-    return cls.load_dnn()
+    return cls.load_dnn(dataset)
 
   @classmethod
-  def load_dnn(cls) -> DnnModel:
-    return torch.load(cls._dnn_path)
+  def load_dnn(cls, dataset) -> DnnModel:
+    memory = torch.load(cls._dnn_path)
+    model = DnnModel.empty(dataset)
+    model.model.load_state_dict(memory['model']['state'])
+    return model
