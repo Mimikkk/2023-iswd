@@ -90,10 +90,12 @@ class ChoquetConstrained(nn.Module):
     score = (x_wi + x_wij) / (weight_sum)
     return self.thresholdLayer(score)
 
-def mobious_transform(row):
-  return list(row) + [
+def transform_mobius(row):
+  row = list(row)
+  row.extend([
     min(row[i], row[j]) for i in range(len(row)) for j in range(i + 1, len(row))
-  ]
+  ])
+  return row
 
 @dataclass
 class AnnModel(object):
@@ -101,10 +103,8 @@ class AnnModel(object):
 
   @classmethod
   def create(cls, dataset: LoanDataset) -> 'AnnModel':
-    df = dataset.labeled.copy()
-
+    _, _, df = dataset.preprocess(variant='labeled')
     df.drop([
-      "Loan_ID",
       "Gender",
       "Married",
       "Dependents",
@@ -113,14 +113,13 @@ class AnnModel(object):
       "Credit_History",
       "Property_Area",
     ], axis=1, inplace=True)
-    df.dropna(inplace=True)
 
     criteria_nr = 4
-    X = df.iloc[:, :criteria_nr].apply(mobious_transform, axis=1, result_type="expand")
-    y = df["Loan_Status"].map({"N": 0, "Y": 1})
+    X = df.iloc[:, :criteria_nr].apply(transform_mobius, axis=1, result_type="expand")
+    y = df["Loan_Status"]
 
     X_train, X_test, y_train, y_test = train_test_split(
-      X.values, y.values, test_size=0.1, random_state=10
+      X, y, test_size=0.1, random_state=10
     )
 
     model = ChoquetConstrained(criteria_nr)

@@ -20,7 +20,7 @@ class LoanDataset(object):
       pd.read_csv(f"./resources/datasets/loan_sanction_unlabeled.csv")
     )
 
-  def preprocess(self, *, variant: SplitType = 'labeled') -> tuple[NDArray, NDArray | None]:
+  def preprocess(self, *, variant: SplitType = 'labeled') -> tuple[NDArray, NDArray | None, DataFrame]:
     df = self.labeled.copy() if variant == 'labeled' else self.unlabeled.copy()
     df.dropna(inplace=True)
     df.drop(columns=["Loan_ID"], inplace=True)
@@ -33,6 +33,6 @@ class LoanDataset(object):
 
     if variant == 'labeled':
       df["Loan_Status"] = df["Loan_Status"].map({"N": 0, "Y": 1})
-      return df.drop(columns=["Loan_Status"]).to_numpy(), df["Loan_Status"].to_numpy()
+      return df.drop(columns=["Loan_Status"]).to_numpy(), df["Loan_Status"].to_numpy(), df
 
-    return df.to_numpy(), None
+    return df.to_numpy(), None, df
