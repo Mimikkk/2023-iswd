@@ -123,10 +123,10 @@ class AnnModel(object):
     data_target = df["Loan_Status"].map(target_map)
 
     X_train, X_test, y_train, y_test = train_test_split(
-      data_input.values, data_target.values, test_size=0.2, random_state=1234
+      data_input.values, data_target.values, test_size=0.1, random_state=10
     )
-    train_dataloader = create_data_loader(X_train, y_train)
-    test_dataloader = create_data_loader(X_test, y_test)
+    train_dataloader = create_data_loader(X_train, y_train, batchsize=32)
+    test_dataloader = create_data_loader(X_test, y_test, batchsize=32)
     PATH = "choquet.pt"
     model = ChoquetConstrained(criteria_nr)
     acc, acc_test, auc, auc_test = train_model(model, train_dataloader, test_dataloader, PATH, lr=0.001, epoch_nr=500)
