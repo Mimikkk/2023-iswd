@@ -13,14 +13,24 @@ class DnnModel(object):
   @classmethod
   def create(cls, dataset: LoanDataset, model_path: str) -> 'DnnModel':
     model = Sequential(
-      nn.Linear(len(dataset.unlabeled.columns) - 1, 256),
-      nn.LeakyReLU(),
+      nn.Linear(len(dataset.unlabeled.columns) - 1, 1024),
+      nn.ReLU(),
+      nn.Linear(1024, 512),
+      nn.ReLU(),
+      nn.BatchNorm1d(512),
+      nn.Dropout(0.3),
+      nn.Linear(512, 256),
+      nn.ReLU(),
+      nn.BatchNorm1d(256),
+      nn.Dropout(0.1),
       nn.Linear(256, 128),
-      nn.LeakyReLU(),
+      nn.ReLU(),
+      nn.Linear(128, 128),
+      nn.ReLU(),
       nn.Linear(128, 64),
-      nn.LeakyReLU(),
+      nn.ReLU(),
       nn.Linear(64, 32),
-      nn.LeakyReLU(),
+      nn.ReLU(),
       nn.Linear(32, 1),
       nn.Sigmoid()
     )
