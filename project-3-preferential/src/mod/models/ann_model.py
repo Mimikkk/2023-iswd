@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import ClassVar
 
 from sklearn.model_selection import train_test_split
 
@@ -16,6 +17,7 @@ def transform_mobius(row):
 @dataclass
 class AnnModel(object):
   model: ChoquetConstrained
+  criteria_nr: ClassVar[int] = 4
 
   @classmethod
   def create(cls, dataset: LoanDataset, model_path: str) -> 'AnnModel':
@@ -30,7 +32,7 @@ class AnnModel(object):
       "Property_Area",
     ], axis=1, inplace=True)
 
-    X = df.iloc[:, :4].apply(transform_mobius, axis=1, result_type="expand")
+    X = df.iloc[:, :cls.criteria_nr].apply(transform_mobius, axis=1, result_type="expand")
     y = df["Loan_Status"]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -57,4 +59,4 @@ class AnnModel(object):
 
   @classmethod
   def empty(cls):
-    return cls(ChoquetConstrained(4))
+    return cls(ChoquetConstrained(cls.criteria_nr))
