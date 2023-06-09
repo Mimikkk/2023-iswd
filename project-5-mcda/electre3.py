@@ -149,7 +149,7 @@ def create_final_matrix(descending, ascending, alternative_count):
 
   return preorder
 
-def create_final_ranking(preorder):
+def create_final_ranking(names, preorder):
   alts = list(map(lambda x: (x,), range(preorder.shape[0])))
 
   for i in reversed(range(preorder.shape[0])):
@@ -203,7 +203,7 @@ def create_final_ranking(preorder):
     plt.text(
       rank_xy[i, 0],
       rank_xy[i, 1],
-      alts_rank[i],
+      f"({i}) {', '.join([names[x] for x in alts_rank[i]])}",
       size=12,
       ha='center',
       va='center',
@@ -239,6 +239,8 @@ def create_median_ranking(ranks, descending, ascending):
   ...
 
 def perform(dataset, preferences, indifferences, vetoes, weights):
+  names = dataset.index
+  dataset = dataset.values
   concordance = create_concordance_matrix(dataset, preferences, indifferences, weights)
   credibility = create_credibility_matrix(dataset, concordance, preferences, vetoes)
 
@@ -247,8 +249,40 @@ def perform(dataset, preferences, indifferences, vetoes, weights):
   rank_ascending = distill(credibility, direction='ascending')
   ranking = create_final_matrix(rank_descending, rank_ascending, alternative_count)
 
-  rank_final = create_final_ranking(ranking)
+  rank_final = create_final_ranking(names, ranking)
   # TODO
   rank_median = create_median_ranking(rank_final, rank_descending, rank_ascending)
 
   return ranking, rank_final  # , rank_median
+
+if __name__ == '__main__':
+  from pandas import read_csv
+  dataset = read_csv('./resources/datasets/ai-index.csv', index_col="Country")
+  criteria = [
+    'Talent',
+    'Infrastructure',
+    'Operating Environment',
+    'Research',
+    'Development',
+    'Government Strategy',
+    'Commercial',
+  ]
+  criteria_count = len(criteria)
+  preferences = [10] * criteria_count
+  indifferences = [2.5] * criteria_count
+  vetoes = [40] * criteria_count
+  weights = [5.0, 2.0, 1.0, 5.0, 5.0, 1.0, 7.0, ]
+
+  df = dataset[criteria]
+  alternatives = df
+
+  rank_final, rank_median = perform(
+    alternatives,
+    preferences,
+    indifferences,
+    vetoes,
+    weights
+  )
+
+  print(rank_final)
+  print(rank_median)
