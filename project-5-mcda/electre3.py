@@ -236,7 +236,42 @@ def create_final_ranking(names, preorder):
   return ranks
 
 def create_median_ranking(ranks, descending, ascending):
-  ...
+  alternatives = [alternative for rank in ranks for alternative in rank]
+  descending = {
+    alternative: rank
+    for (rank, level) in enumerate(descending)
+    for alternative in level
+  }
+  ascending = {
+    alternative: rank
+    for (rank, level) in enumerate(ascending)
+    for alternative in level
+  }
+
+  ranks = {
+    alternative: rank
+    for (level, rank) in ranks.items()
+    for alternative in level
+  }
+
+  order = []
+  for i in range(len(ranks)):
+    order.append(i)
+
+    for j in range(i, 0, -1):
+      a, b = alternatives[order[j]], alternatives[order[j - 1]]
+
+      if ranks[a] < ranks[b]:
+        order[j], order[j - 1] = order[j - 1], order[j]
+
+      elif ranks[a] == ranks[b]:
+        desc_difference = descending[a] - descending[b]
+        asc_difference = ascending[a] - ascending[b]
+
+        if desc_difference + asc_difference >= 0: continue
+        order[j], order[j - 1] = order[j - 1], order[j]
+
+  return [alternatives[o] for o in order]
 
 def perform(dataset, preferences, indifferences, vetoes, weights):
   names = dataset.index
@@ -250,39 +285,7 @@ def perform(dataset, preferences, indifferences, vetoes, weights):
   ranking = create_final_matrix(rank_descending, rank_ascending, alternative_count)
 
   rank_final = create_final_ranking(names, ranking)
-  # TODO
+
   rank_median = create_median_ranking(rank_final, rank_descending, rank_ascending)
 
-  return ranking, rank_final  # , rank_median
-
-if __name__ == '__main__':
-  from pandas import read_csv
-  dataset = read_csv('./resources/datasets/ai-index.csv', index_col="Country")
-  criteria = [
-    'Talent',
-    'Infrastructure',
-    'Operating Environment',
-    'Research',
-    'Development',
-    'Government Strategy',
-    'Commercial',
-  ]
-  criteria_count = len(criteria)
-  preferences = [10] * criteria_count
-  indifferences = [2.5] * criteria_count
-  vetoes = [40] * criteria_count
-  weights = [5.0, 2.0, 1.0, 5.0, 5.0, 1.0, 7.0, ]
-
-  df = dataset[criteria]
-  alternatives = df
-
-  rank_final, rank_median = perform(
-    alternatives,
-    preferences,
-    indifferences,
-    vetoes,
-    weights
-  )
-
-  print(rank_final)
-  print(rank_median)
+  return ranking, rank_final, rank_median
