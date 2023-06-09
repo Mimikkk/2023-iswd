@@ -149,7 +149,7 @@ def create_final_matrix(descending, ascending, alternative_count):
 
   return preorder
 
-def preorder_ranking(preorder):
+def create_final_ranking(preorder):
   alts = list(map(lambda x: (x,), range(preorder.shape[0])))
 
   for i in reversed(range(preorder.shape[0])):
@@ -173,7 +173,7 @@ def preorder_ranking(preorder):
   if np.sum(col_sum) != 0: alts_rank.reverse()
 
   graph = {value: key for (key, value) in enumerate(alts)}
-  graph_rank = {value: key for (key, value) in enumerate(alts_rank)}
+  ranks = {value: key for (key, value) in enumerate(alts_rank)}
 
   rank = np.copy(preorder_matrix)
   for i in range(preorder_matrix.shape[0]):
@@ -181,12 +181,14 @@ def preorder_ranking(preorder):
       if (preorder_matrix[i, j] == 1):
         rank[i, :] = np.clip(rank[i, :] - rank[j, :], 0, 1)
   rank_xy = np.zeros((len(alts_rank), 2))
+
   for i in range(rank_xy.shape[0]):
     rank_xy[i, 0] = 0
     if (len(alts_rank) - np.sum(~rank.any(1)) != 0):
       rank_xy[i, 1] = len(alts_rank) - np.sum(~rank.any(1))
     else:
       rank_xy[i, 1] = 1
+
   for i in range(len(alts_rank) - 1):
     i1 = int(graph[alts_rank[i][:2]])
     i2 = int(graph[alts_rank[i + 1][:2]])
@@ -212,8 +214,8 @@ def preorder_ranking(preorder):
   for i in range(rank.shape[0]):
     for j in range(rank.shape[1]):
       if rank[i, j] != 1: continue
-      k1 = graph_rank[keys[values.index(i)]]
-      k2 = graph_rank[keys[values.index(j)]]
+      k1 = ranks[keys[values.index(i)]]
+      k2 = ranks[keys[values.index(j)]]
 
       plt.arrow(
         rank_xy[k1, 0],
@@ -231,15 +233,7 @@ def preorder_ranking(preorder):
   plt.gcf().set_size_inches(12, 16)
   plt.axis('off')
   plt.show()
-
-  print(rank_xy)
-  return
-
-def create_final_ranking(descending, ascending):
-  ...
-
-def create_ranks(ranking):
-  ...
+  return ranks
 
 def create_median_ranking(ranks, descending, ascending):
   ...
@@ -252,44 +246,9 @@ def perform(dataset, preferences, indifferences, vetoes, weights):
   rank_descending = distill(credibility, direction='descending')
   rank_ascending = distill(credibility, direction='ascending')
   ranking = create_final_matrix(rank_descending, rank_ascending, alternative_count)
-  preorder_ranking(ranking)
-  print(ranking)
 
-  rank_final = create_final_ranking(rank_descending, rank_ascending)
-  ranks = create_ranks(rank_final)
-  rank_median = create_median_ranking(ranks, rank_descending, rank_ascending)
+  rank_final = create_final_ranking(ranking)
+  # TODO
+  rank_median = create_median_ranking(rank_final, rank_descending, rank_ascending)
 
-  return ranks, rank_final, rank_median
-
-if __name__ == '__main__':
-  from pandas import read_csv
-  dataset = read_csv('./resources/datasets/ai-index.csv', index_col="Country")
-  criteria = [
-    'Talent',
-    'Infrastructure',
-    'Operating Environment',
-    'Research',
-    'Development',
-    'Government Strategy',
-    'Commercial',
-  ]
-  criteria_count = len(criteria)
-  preferences = [10] * criteria_count
-  indifferences = [2.5] * criteria_count
-  vetoes = [40] * criteria_count
-  weights = [5.0, 2.0, 1.0, 5.0, 5.0, 1.0, 7.0, ]
-
-  df = dataset[criteria]
-  alternatives = df.values
-
-  ranks, rank_final, rank_median = perform(
-    alternatives,
-    preferences,
-    indifferences,
-    vetoes,
-    weights
-  )
-
-  print(ranks)
-  print(rank_final)
-  print(rank_median)
+  return ranking, rank_final  # , rank_median
